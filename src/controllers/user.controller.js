@@ -79,6 +79,8 @@ const registerUser = asyncHandler ( async (req,res)=>{
     if(!createdUserTempInstance){
         throw new ApiError(500, "Something went wrong while registering user")
     }
+    console.log("user.controller:: registerUser:: user reg successfully")
+    
     return res
     .status(201)
     .json(new ApiResponse(200,"User Registered Successfully!") )
@@ -119,9 +121,10 @@ const loginUser = asyncHandler ( async (req,res)=>{
 
     const options  = {
         httpOnly : true,
-        secure : true
+        secure : true,
     }
 
+    console.log("user.controller:: loginUser:: user loggedIn successfully")
     return res
     .status(200)
     .cookie("accessToken",accessToken,options)
@@ -213,9 +216,21 @@ const refreshAccessToken = asyncHandler(async (req,res)=>{
 
 })
 
+const getCurrentUser = asyncHandler(async(req,res)=>{
+
+    // since verifyJwt sends all req, user data
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, req.user, "user fetched successfully")
+    )
+})
+
 export {
     registerUser,
     loginUser,
     logoutUser,
     refreshAccessToken,
+    getCurrentUser,
 }

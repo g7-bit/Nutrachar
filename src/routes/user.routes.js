@@ -6,6 +6,7 @@ import {
     loginUser,
     logoutUser,
     refreshAccessToken,
+    getCurrentUser,
  } from "../controllers/user.controller.js";
 
 const router = Router()
@@ -15,6 +16,7 @@ router.route("/register").post(upload.single('avatar'), registerUser)
 router.route("/login").post(loginUser)
 router.route("/logout").post(verifyJWT, logoutUser)
 router.route("/refresh-accToken").post(refreshAccessToken)
+router.route("/current-user").get(verifyJWT,getCurrentUser)
 
 
 
