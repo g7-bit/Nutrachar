@@ -14,9 +14,7 @@ const genRefreshAndAccessToken = async(userId)=>{
         const user = await User.findById(userId)
         
         const accessToken = user.generateAccessToken()
-        // console.log("uaer controller :: gen token,:: ", accessToken)
         const refreshToken = user.generateRefreshToken()
-        // console.log("uaer controller :: gen token,:: ", refreshToken)
 
         user.refreshToken = refreshToken
         await user.save({validateBeforeSave: false})
@@ -42,31 +40,30 @@ const genNewAccessToken = async (userId)=> {
 const registerUser = asyncHandler ( async (req,res)=>{
 
     const {username,email,password} = req.body
-    console.log("req.body ::: ",req.body)
-
+    console.log("server::0.1regUser::req.body ::: ",req.body)
+    
     if([username, email, password].some((field)=> field?.trim() ==="")){
         throw new ApiError(400, "All fields required")
     }
-
+    
     const existingUser = await User.findOne({
         $or: [{username},{email}]
     })
     if(existingUser){
         throw new ApiError(409, "User already exists")
     }
-
+    
     const avatarLocalPath = req.file?.path
-    // console.log("avatarlocalpath:: ",avatarLocalPath)
     if(!avatarLocalPath){
         throw new ApiError(400, "Avatar file missing")
     }
-
+    
     const avatar = await uploadOnCloudinary(avatarLocalPath)
-    console.log("user.controller.js::uploading on cloudinary:: ",avatar)
-    if(!avatar){
-        throw new ApiError(400, "error while uploading on avatar12")
-    }
 
+    if(!avatar){
+        throw new ApiError(400, "error while uploading avatar to bucket")
+    }
+    
     const user = await User.create({
         username: username.toLowerCase(),
         email,
@@ -89,7 +86,6 @@ const registerUser = asyncHandler ( async (req,res)=>{
 })
 const loginUser = asyncHandler ( async (req,res)=>{
     const {email, username, password} = req.body
-    // console.log("user.controller::loginUser:: ",req.body)
 
     
     
@@ -112,7 +108,6 @@ const loginUser = asyncHandler ( async (req,res)=>{
         throw new ApiError(401, "Invalid User Credentials")
     }
     const {accessToken, refreshToken} = await genRefreshAndAccessToken(user._id)
-    // console.log(" user.controller:: loginn user:: refreshToken ", refreshToken, "access token ", accessToken)
 
     // prepare data to be sent/ res
     const loggedInUser = await User.findById(user._id).select(
@@ -124,7 +119,7 @@ const loginUser = asyncHandler ( async (req,res)=>{
         secure : true,
     }
 
-    console.log("user.controller:: loginUser:: user loggedIn successfully")
+    console.log("Server: user.controller:: loginUser:: user loggedIn successfully")
     return res
     .status(200)
     .cookie("accessToken",accessToken,options)

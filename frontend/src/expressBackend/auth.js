@@ -6,14 +6,27 @@ export class AuthService{
 
 
     async registerAccount({username, email, password, avatar}) {
+
+            const formData =new FormData()
+            formData.append('avatar', avatar)
+            formData.append('username', username)
+            formData.append('email', email)
+            formData.append('password', password)
+
         try{
             const userAccount = await axios.post(
-                `${envConf.backendUrl}/api/v1/users/register`,
-                {username, email, password,avatar,}
+                `/api/v1/users/register`,
+                formData,
             )
+            // const userAccount = await axios.post(
+            //     `/api/v1/users/register`,
+            //     {username, email, password,avatar,}
+            // )
             return userAccount
         }catch(error){
+            console.log("error at auth.js, registeraccount")
             throw error
+            
         }
     }
     async login({username,email, password}){
@@ -28,7 +41,8 @@ export class AuthService{
             console.log("auth.js:: login:: user logged in successfully")
             return loggedUser
         } catch (error) {
-            console.log("auth error",error)
+            // console.log("auth error",error)
+            return false
         }
     }
     async logout(){
@@ -47,7 +61,8 @@ export class AuthService{
             const userData=  await axios.get(`/api/v1/users/current-user`,
                 {withCredentials:true}
             )
-            console.log("auth.js:: getcurruser:: ", userData)
+            // console.log("auth.js:: getcurruser:: ", userData)
+            return userData
             
         } catch (error) {
          console.log("get current User error:: ",error)   
