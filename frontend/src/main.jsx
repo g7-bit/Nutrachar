@@ -9,6 +9,7 @@ import store from './store/store.js'
 
 import SignupPage from './pages/SignupPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
+import FourZeroFour from './pages/FourZeroFour.jsx'
 
 
 const router = createBrowserRouter([
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path:"/login",
         element: <LoginPage/>
+      },
+      {
+        path:"*",
+        element: <FourZeroFour/>
       }
 
     ]

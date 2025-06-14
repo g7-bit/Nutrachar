@@ -8,6 +8,9 @@ import Login from "./Login";
 import Button from "./Button";
 import Input from './Input'
 import LogoutBtn from './LogoutBtn'
+import DynamicImageInput from "./DynamicImageInput";
+import DynamicDataInput from "./DynamicDataInput";
+
 
 export {
 
@@ -20,5 +23,8 @@ export {
     Login,
     Button,
     Input,
-    LogoutBtn
+    LogoutBtn,
+    DynamicImageInput,
+    DynamicDataInput,
+    
 }

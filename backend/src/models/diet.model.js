@@ -3,6 +3,11 @@ import mongoose , {Schema} from "mongoose"
 
 const dietSchema = new Schema ({
 
+    user:{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     foodItems: [
         {
             type: Schema.Types.ObjectId,

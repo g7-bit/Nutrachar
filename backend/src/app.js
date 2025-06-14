@@ -27,22 +27,25 @@ app.use(cookieParser())
 import { ApiError } from "./utils/ApiError.js"
 
 import userRouter from './routes/user.routes.js'
+import dietRouter from './routes/diet.routes.js'
 
 
-app.get("/api/v1/backend", (req,res)=>{
-    const contennt1= {
-        message: "backend datafrom frontend"
-    }
-    console.log("/app.js/backedn ")
-    // console.log(typeof(process.env.CORS_ORIGIN))
-    console.log(process.env.CORS_ORIGIN)
-    // console.log("app.js backend env ;: ", process.env.CORS_ORIGIN)
-    res.json(contennt1)
 
-})
+
+// app.get("/api/v1/backend", (req,res)=>{
+//     const contennt1= {
+//         message: "backend datafrom frontend"
+//     }
+//     console.log("/app.js/backedn ")
+//     // console.log(typeof(process.env.CORS_ORIGIN))
+//     console.log(process.env.CORS_ORIGIN)
+//     // console.log("app.js backend env ;: ", process.env.CORS_ORIGIN)
+//     res.json(contennt1)
+// })
 
 
 app.use("/api/v1/users", userRouter)
+app.use("/api/v1/diet", dietRouter)
 
 app.use((err,req,res,next)=>{
   if (err instanceof ApiError){
@@ -54,7 +57,21 @@ app.use((err,req,res,next)=>{
       errors: err.errors
     })
   }else{
-    res.status(500).send("Something Broke on Serverside")
+    // res.status(500).send("Something Broke on Serverside")
+      if (process.env.NODE_ENV === 'development') {
+      res.status(500).json({
+        success: false,
+        message: "Something Broke on Serverside",
+        error: err.message,
+        stack: err.stack
+      });
+    } else {
+      // In production, send a generic message
+      res.status(500).json({
+        success: false,
+        message: "Something Broke on Serverside"
+      });
+    }
   }
 
 })
