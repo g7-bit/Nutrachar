@@ -3,24 +3,30 @@ import { ApiError } from "../utils/ApiError.js";
 import ocrProcessGemini from "../utils/gemini.js";
 import { ApiResponse } from "../utils/ApiRespoonse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import {User} from '../models/user.model.js'
+import {Food} from '../models/food.model.js'
+import {Diet} from '../models/diet.model.js'
 
 const createDiet = asyncHandler(async (req, res) => {
   console.log("imagecontroller.jsx hello");
   console.log("req.boyd:RAW:: ", req.body);
   console.log("req.files :: RAW:: ", req.files);
+  console.log("req.user:: RAW ", req.user)
 
+  //checking empty manual data else Parsing it,  // converting manual data values to numbers
+ 
   if (req.body.manualData === "") {
     console.log("empty manual data");
     throw new ApiError(400, "empty manual food data");
   } else if (req.body.manualData) {
     req.body.manualData = JSON.parse(req.body.manualData);
-  }``
-  if(req.body.quantity){
-    req.body.quantity = req.body.quantity.map(Number)
-    console.log("parsed quantity",req.body.quantity)
+  }
+  // changing quantity array ele to numbers
+  if (req.body.quantity) {
+    req.body.quantity = req.body.quantity.map(Number);
+
   }
 
-  console.log("exit of loop");
 
   // ? checks if null/undefined before chekcing .length,
   //   if req.body is undefined it makes the whole expression undefined
@@ -30,18 +36,42 @@ const createDiet = asyncHandler(async (req, res) => {
   const noCompleteImage = noImageFile || noImageName || noQuantityForimage;
 
   const imagePresent = !noCompleteImage;
-  const manualDataPresent = req.body?.manualData !== "";
+  const manualDataPresent = req.body?.manualData !== undefined 
 
-  async function processImage(files) {
+
+  async function addDietData(dietArray, userId) {
+    console.log("inside db walla unction, dietArray, ", dietArray)
+    console.log("inside db walla userID, ", userId)
+    try{
+      const foods = await Food.insertMany(dietArray)
+      
+      if(!foods) throw new ApiError (500,"failed to create food items" )
+        const foodIds = foods.map(food => food._id)
+        // console.log(foodIds)
+
+      const userDiet = new Diet({
+        user: userId,
+        foodItems : foodIds,
+      })
+      const createdDiet = await userDiet.save()
+      console.log("diete, ", createdDiet)
+      return createdDiet
+    }catch{
+      console.log("diet.controller.js:: something went wrig in db")
+      throw new ApiError(500, "Error occured when savind data in db")
+    }
+  }
+  async function processImage(files,body) {
+
     let i = 0;
     let foodArray = [];
     for (const file of files) {
       console.log("filessss", file.path);
       try {
-        console.log("processing images")
+        console.log("processing images");
         const initGemData = await ocrProcessGemini(file.path);
-        initGemData.dietgem.quantity = req.body.quantity[i];
-        initGemData.dietgem.foodName = req.body.foodNameforImage[i];
+        initGemData.dietgem.quantity = body.quantity[i];
+        initGemData.dietgem.foodName = body.foodNameforImage[i];
 
         foodArray.push(initGemData.dietgem);
 
@@ -57,7 +87,7 @@ const createDiet = asyncHandler(async (req, res) => {
     return foodArray;
   }
 
-  // if(true){
+// for incomplete image data
   if (!noImageFile || !noImageName) {
     if (noCompleteImage) {
       throw new ApiError(400, "incomplete image data");
@@ -71,13 +101,19 @@ const createDiet = asyncHandler(async (req, res) => {
 
   if (imagePresent && manualDataPresent) {
     console.log("BOth data present");
-    const processedFoodArray = await processImage(req.files);
+    const processedFoodArray = await processImage(req.files,req.body);
     const finalArray = [...processedFoodArray, ...req.body.manualData];
-    console.log("final array:: ",finalArray);
+    console.log("final array:: ", finalArray);
+
+    addDietData(finalArray, req.user._id)
+
+
 
     return res.status(200).json(new ApiResponse(200, "done processing"));
   } else if (manualDataPresent) {
     console.log("only manual data");
+    const manualDataArray = req.body.manualData
+    console.log("final manual array, ", manualDataArray)
   } else if (imagePresent) {
     console.log("ONly image data");
   }

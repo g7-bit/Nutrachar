@@ -42,43 +42,43 @@ function DynamicDataInput({
               />
               <Input
               label={`Quantity`}
-              type='Number'
-              {...control.register(`${name}.${index}.quantity`,{required:true})}
+              type='number'
+              {...control.register(`${name}.${index}.quantity`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Protein/100gm`}
               type='number'
-              {...control.register(`${name}.${index}.protein`,{required:true})}
+              {...control.register(`${name}.${index}.protein`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`carbs/100gm`}
               type='number'
-              {...control.register(`${name}.${index}.carbs`,{required:true})}
+              {...control.register(`${name}.${index}.carbs`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Fats/100gm`}
               type='number'
-              {...control.register(`${name}.${index}.fats`,{required:true})}
+              {...control.register(`${name}.${index}.fats`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Calories /100gm`}
               type='number'
-              {...control.register(`${name}.${index}.calories`,{required:true})}
+              {...control.register(`${name}.${index}.calories`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Sugar/100gm`}
               type='number'
-              {...control.register(`${name}.${index}.sugar`,{required:true})}
+              {...control.register(`${name}.${index}.sugar`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Added Sugar /100gm`}
               type='number'
-              {...control.register(`${name}.${index}.addedSugar`,{required:true})}
+              {...control.register(`${name}.${index}.addedSugar`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Saturated Fats /100gm`}
               type='number'
-              {...control.register(`${name}.${index}.saturatedFats`,{required:true})}
+              {...control.register(`${name}.${index}.saturatedFats`,{required:true,valueAsNumber: true})}
               />
 
               <Button

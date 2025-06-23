@@ -29,9 +29,7 @@ function DynamicImageInput({
             <Input
               label={`Quantity: In gm OR units`}
               type="number"
-              {...control.register(`${name}.${index}.quantity`, {
-                required: true,
-              })}
+              {...control.register(`${name}.${index}.quantity`, {required:true,valueAsNumber: true})}
             />
             <Input
               label={`Image ${index + 1}`}

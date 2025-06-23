@@ -7,6 +7,7 @@ import {
   DynamicImageInput,
   DynamicDataInput,
 } from "./index.js";
+import dietService from "../expressBackend/diet.js";
 import axios from "axios";
 
 function Dashboard() {
@@ -40,21 +41,7 @@ function Dashboard() {
     return formData;
   }
 
-  async function sendAxiosRequest(formData) {
 
-
-    try {
-      const requesty = await axios.post("api/v1/diet/newDiet", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log("response from server::", requesty)
-      
-    } catch (error) {
-      console.log(error.response?.data);
-    }
-  }
 
   const createDiet = async (data) => {
     setError("");
@@ -82,21 +69,21 @@ function Dashboard() {
       const manualDataforAxios = data.manualData;
       formData.append("manualData", JSON.stringify(manualDataforAxios)); 
 
-      sendAxiosRequest(formData,manualDataforAxios);
+      dietService.createNewDiet(formData,manualDataforAxios);
     } else if (hasImageData) {
       console.log("only image data present");
       const formData = makeImgFormData(data);
       formData.forEach((value, key) => {
         console.log(key, value);
       });
-      sendAxiosRequest(formData)
+      dietService.createNewDiet(formData)
     } else if (hasManualData) {
       console.log("only Manual data present");
       const manualDataforAxios = data.manualData;
       const formData = new FormData()
       formData.append("manualData", JSON.stringify(manualDataforAxios));
 
-      sendAxiosRequest(formData); 
+      dietService.createNewDiet(formData); 
     }
   };
 
@@ -130,6 +117,7 @@ function Dashboard() {
           // console.log("errors are",errors)
         })}
       >
+
         {!isImageInputVisible ? (
           <Button type="button" onClick={() => setIsImageInputVisible(true)}>
             Add Image

@@ -29,12 +29,7 @@
     refreshToken: {
         type: String,
     },
-    diets: [
-        {
-            type: Schema.Types.ObjectId,
-            ref:"Diet"
-        }
-    ]
+
 
 
 }, {timestamps: true})

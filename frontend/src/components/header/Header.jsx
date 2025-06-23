@@ -1,16 +1,30 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {Logo, LogoutBtn} from '../../components'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
+import authService from '../../expressBackend/auth'
+import {login} from '../../store/authslice'
+
 
 //TODO:  create logic for header elements
 function Header() {
-
+  const dispatch = useDispatch()
   const userDataStore= useSelector((state)=>state.auth.userData)
 
-  // useEffect(()=>{
+  
+  useEffect(()=>{
 
-  // },[userDataStore])
+    const fetchUser = async()=>{
+      if(userDataStore === null){
+        const userGet = await authService.getCurrentUser()
+        if(userGet === undefined)return 
+        dispatch(login(userGet.data.data))
+      }
+    }
+    fetchUser()
+    console.log("userdata", userDataStore)
+  },[userDataStore,])
   return (
     <>
     <div className=' flex  justify-between items-center px-5'> {/* md means mediam and up */}
