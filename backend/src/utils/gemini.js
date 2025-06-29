@@ -1,28 +1,27 @@
-  import {
+import {
   GoogleGenAI,
   createUserContent,
   createPartFromUri,
 } from "@google/genai";
 import { ApiError } from "../utils/ApiError.js";
 
-
-
-
-const ai = new GoogleGenAI({ apiKey: "AIzaSyAfuwoQw4XAMog_nLc8nYiFRXy0OTl_tNI" });
+const ai = new GoogleGenAI({
+  apiKey: "AIzaSyAfuwoQw4XAMog_nLc8nYiFRXy0OTl_tNI",
+});
 
 async function ocrProcessGemini(filePath) {
-try {
+  let parsedObject;
+  try {
     const myfile = await ai.files.upload({
-        file: filePath,
-        config: { mimeType: "image/jpeg" },
-      });
-    
-    
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash-preview-05-20",
-        contents: createUserContent([
-          createPartFromUri(myfile.uri, myfile.mimeType),
-          `give me an object, in json format.
+      file: filePath,
+      config: { mimeType: "image/jpeg" },
+    });
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash-preview-05-20",
+      contents: createUserContent([
+        createPartFromUri(myfile.uri, myfile.mimeType),
+        `give me an object, in json format.
           give values /100gm,
           if no values of given macro, write 0
           if image is not of an nutritional label, give object dietgem:'invalid'
@@ -41,23 +40,22 @@ try {
           saturatedFats:22      
           }
           `,
-        ]),
-      });
-      // console.log("response full:: :: ",response);
-      // console.log("response.text :: :",response.text);
-      const sliced=response.text.slice(7,-3)
-      // console.log("sliced:: ", sliced)
-      const parsedText=JSON.parse(sliced)
-      // console.log("gemini.js:: parsedText", parsedText)
-      if(parsedText.dietgem === 'invalid'){
-        throw new Error("Please provide actual nutritinal label image")
-      }
-      return parsedText
-} catch (error) {
-    console.log('gemini.js:: catch error:: ', error)
-    throw new ApiError(500, "google api error")
-}
-  
+      ]),
+    });
+    // console.log("response full:: :: ",response);
+    // console.log("response.text :: :",response.text);
+    const sliced = response.text.slice(7, -3);
+    // console.log("sliced:: ", sliced)
+    parsedObject = JSON.parse(sliced);
+    // console.log("gemini.js:: parsedText", parsedText)
+  } catch (error) {
+    console.log("gemini.js:: catch error:: ", error);
+    // throw new ApiError(500, "google api error")
+  }
+  if (parsedObject.dietgem === "invalid") {
+    throw new ApiError(400, "Please provide actual nutritinal label image");
+  }
+  return parsedObject;
 }
 
-export default ocrProcessGemini
+export default ocrProcessGemini;

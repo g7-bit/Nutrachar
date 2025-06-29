@@ -8,6 +8,7 @@ function DynamicImageInput({
   fieldLabel = "field",
   defaultItem = { foodName: "", image: "" },
   errors,
+  loading= false
 }) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -42,7 +43,8 @@ function DynamicImageInput({
             {/* {errors?.[name]?.[index]?.image?.type === "required" && (
               <p role="alert">Image is required</p>
             )} */}
-
+            
+                  {!loading && 
             <Button
               type="button"
               className="h-7 my-8 "
@@ -50,13 +52,16 @@ function DynamicImageInput({
             >
               Remove
             </Button>
+            }
           </li>
         ))}
       </ul>
       {/* {error && <p className='text-red-400 text-center font-semibold'>{error}</p>} */}
+      {!loading && 
       <Button type="button" onClick={() => append(defaultItem)}>
-        Add Image
+        Add Another Image
       </Button>
+      }
     </div>
   );
 }

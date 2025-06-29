@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { RouterProvider,createBrowserRouter } from 'react-router-dom'
-import { Home, Dashboard } from './components'
+import { Home, Dashboard, DietForm,Diet } from './components'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
 
@@ -26,12 +26,20 @@ const router = createBrowserRouter([
         element: <Dashboard/>
       },
       {
+        path:"/dietForm",
+        element: <DietForm/>
+      },
+      {
         path:"/signup",
         element: <SignupPage/>
       },
       {
         path:"/login",
         element: <LoginPage/>
+      },
+      {
+        path:"/diet/:dietId",
+        element:<Diet/>
       },
       {
         path:"*",

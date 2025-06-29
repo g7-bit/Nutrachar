@@ -6,6 +6,7 @@ function DynamicDataInput({
     control,
     name,
     fieldLabel = "field",
+    loading= false,
     defaultItem = {
       foodName: "",
       quantity: "",
@@ -81,6 +82,7 @@ function DynamicDataInput({
               {...control.register(`${name}.${index}.saturatedFats`,{required:true,valueAsNumber: true})}
               />
 
+              {!loading && 
               <Button
               type='button'
               className='h-7 my-8 '
@@ -88,29 +90,38 @@ function DynamicDataInput({
               >
                 Remove &#128465;
               </Button>
+              }
 
             </li>
           ))}
         </ul>
         {/* {error && <p className='text-red-400 text-center font-semibold'>{error}</p>} */}
 
+{!loading && 
+<div>
+        
         {(fields.length>0) &&
         <Button
         type='button'
         onClick={()=>append(defaultItem)}
         >
-        add manual
+          add another manual food data
         </Button>
         }
+
+
         {fields.length===0 &&
          <Button
         type='button'
         onClick={()=>append(defaultItem)}
         >
-        Add manual data again
+        Add food data manually
         </Button>
         }
+              </div>
+}
     </div>
+  
   )
 }
 

@@ -17,13 +17,14 @@ function Header() {
 
     const fetchUser = async()=>{
       if(userDataStore === null){
+        console.log("header.jsx::: called getcurretnUser")
         const userGet = await authService.getCurrentUser()
         if(userGet === undefined)return 
         dispatch(login(userGet.data.data))
       }
     }
     fetchUser()
-    console.log("userdata", userDataStore)
+    // console.log("header.jsx:: userdata:: ", userDataStore)
   },[userDataStore,])
   return (
     <>

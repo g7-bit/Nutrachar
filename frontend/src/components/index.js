@@ -1,4 +1,4 @@
-import Dashboard from "./Dashboard";
+import DietForm from "./DietForm";
 import Home from "./Home"
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
@@ -10,11 +10,13 @@ import Input from './Input'
 import LogoutBtn from './LogoutBtn'
 import DynamicImageInput from "./DynamicImageInput";
 import DynamicDataInput from "./DynamicDataInput";
+import Dashboard from "./Dashboard";
+import Diet from './Diet'
 
 
 export {
 
-    Dashboard,
+    DietForm,
     Home,
     Header,
     Footer,
@@ -26,5 +28,6 @@ export {
     LogoutBtn,
     DynamicImageInput,
     DynamicDataInput,
-    
+    Dashboard,   
+    Diet,
 }

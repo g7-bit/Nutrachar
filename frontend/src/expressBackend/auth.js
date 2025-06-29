@@ -61,7 +61,7 @@ export class AuthService{
             const userData=  await axios.get(`/api/v1/users/current-user`,
                 {withCredentials:true}
             )
-            console.log("auth.js:: getcurruser:: ", userData)
+            // console.log("auth.js:: getcurruser:: ", userData)
             return userData
             
         } catch (error) {
