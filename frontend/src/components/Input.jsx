@@ -25,7 +25,7 @@ function Input({
 
         <input
         type={type}
-        className={`${inputClassName? inputClassName: "bg-blue-300" } rounded-2xl mb-5 mt-1 h-8 text-xl  `}
+        className={inputClassName|| `bg-blue-300 rounded-2xl mb-5 mt-1 h-8 text-xl  `}
         // placeholder={placeholder}
         {...props}
         ref={ref}
