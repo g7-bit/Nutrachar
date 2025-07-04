@@ -7,7 +7,7 @@ import { Input } from "../components";
 function Diet() {
   const { dietId } = useParams();
   const [error, setError] = useState(false);
-  const [initialData, setInitialData] = useState([])
+  const [currentData, setCurrentData] = useState([]);
   const [multiplierArr, setMultiplierArr] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalMacros, setTotalMacros] = useState({});
@@ -24,82 +24,95 @@ function Diet() {
     "Saturated Fats",
   ];
 
-  function calculateTotalMacros(data) {
-    console.log("totoal macros in function", data)
-    const totalMacros =data.reduce((all, currentObj) => {
-      console.log("all:: ",all, "\n current:: ", currentObj);
-      for (const key in currentObj) {
-        if (typeof currentObj[key] === "number" && key !== "__v") {
-          // all[key] = parseFloat(((all[key] || 0) + currentObj[key]).toFixed(2));
-          all[key] = ((all[key] || 0) + currentObj[key])
-          // console.log("all inside ", all);
-        } else if (key === "foodName") {
-          all[key] = "Total";
+  const roundToThree = (num) => Math.round(num * 1000) / 1000;
+  // setting Total row
+
+
+
+
+// Creating multiplier obj,  called by mainapi
+  let multiplierObj = [];
+  function multipliers(data) {
+    // console.log("inside func:: multiplier ", data);
+      multiplierObj = data.map((foodObj) =>{
+        const updatedFoodObj = {...foodObj}
+      Object.keys(updatedFoodObj).forEach((foodItem) => {
+        if (
+          typeof updatedFoodObj[foodItem] === "number" &&
+          foodItem !== "quantity" &&
+          foodItem !== "__v"
+        ) {
+          // console.log(" ", foodItem)
+          if(updatedFoodObj[foodItem] === 0){
+            updatedFoodObj[foodItem] = 0
+          }else{
+
+            updatedFoodObj[foodItem] = updatedFoodObj[foodItem] / updatedFoodObj.quantity;
+          }
         }
-      }
-      // console.log("ally",all)
-      return all;
-    }, {});
-    console.log("totalmacors findal",totalMacros)
-    setTotalMacros(totalMacros);
+      })
+      return updatedFoodObj
+    }); 
+    
+    // console.log("final multiplier Obj", multiplierObj)
+    setMultiplierArr(multiplierObj)
   }
 
-  useEffect(() => {}, []);
-  
-  async function convertInMultiplier(data) {
-    console.log("data in converter", data);
-    const convertedData = data.map((foodObj) => {
-      const newFoodObj = { ...foodObj };
-      
-      Object.keys(newFoodObj)
-      .filter((key) => key !== "_id" && key !== "__v")
-      .forEach((key) => {
-        if (key !== "quantity" && key !== "foodName") {
-          // foodObj[key] = parseFloat((foodObj[key]/foodObj.quantity).toFixed(2))
-          // newFoodObj[key] = (newFoodObj[key] / newFoodObj.quantity);
-          // console.log("befroe",key, newFoodObj[key])
-          newFoodObj[key] = newFoodObj[key] / newFoodObj.quantity
-          //  console.log("afterr",key, newFoodObj[key])
+  // setting data for total row
+  useEffect(() => {
+    // console.log("current dataa check in ttoal useEffect", currentData);
+    const totalObj = currentData.reduce((accumulatorObj, foodObj) => {
+      Object.keys(foodObj).forEach((foodItem) => {
+        if (
+          typeof foodObj[foodItem] === "number" &&
+          foodItem !== "quantity" &&
+          foodItem !== "__v"
+        ) {
+          accumulatorObj[foodItem] =
+            (accumulatorObj[foodItem] || 0) + foodObj[foodItem];
+          // console.log(foodItem, foodObj[foodItem])
+        } else if (foodItem === "foodName") {
+          accumulatorObj.foodName = "Total";
+          accumulatorObj.quantity = "NaN";
         }
       });
-      return newFoodObj;
-    });
+      return accumulatorObj;
+    }, {});
+    // console.log("total boj", totalObj);
+    setTotalMacros(totalObj);
+  }, [currentData]);
+
+  //Handle onChange
+  const handleOnChange = (value, fName) => {
+    // console.log("handleOnchange Raw", value, fName);
+    // console.log("HandleOnChange current Data in ", currentData); // old data with old Quantity value
+
+    // console.log("multiplier in handleOnChange", multiplierArr)
+
+    const multiplierObj = multiplierArr.find(obj=>obj.foodName === fName)
     
-    
-    console.log("convertedInMultiplier", convertedData);
-    await setMultiplierArr(convertedData) // state Update
-    
-    
-  }
+    if(multiplierObj){
+      const updatedFoodObj = currentData.map(foodObj=>{
+        if(foodObj.foodName ===fName){
+          const updatedFoodObj = {...foodObj}
+          updatedFoodObj.quantity = value
 
-  useEffect(() => {
-    calculateTotalMacros(initialData) 
-  }, [initialData]);
-  
-
-
-
-  function handleOnChange(value, fname){
-
-    console.log("fname:: ", fname)
-    console.log("value:: ", value)
-    console.log("handleOnchange ::og InitialData,  ",initialData)
-    const modifiedData = initialData.map(foodObj=>{
-      Object.keys(foodObj).forEach(foodItem=>{
-        // console.log('foodItem',foodItem)
-        if(foodObj[foodItem] === fname){
-          foodObj.quantity = value
+          Object.keys(updatedFoodObj).forEach(foodItem=>{
+            if(typeof updatedFoodObj[foodItem] === 'number' && foodItem !== 'quantity' && foodItem !== '__v'){
+              updatedFoodObj[foodItem] = multiplierObj[foodItem] * value
+            }
+          })
+          return updatedFoodObj
         }
+        return foodObj
+      })
+      // console.log("updated handle onsubmit :: ", updatedFoodObj)
+      setCurrentData(updatedFoodObj)
+    }
 
-      }
-    )
-      return foodObj
-    })
-    console.log("Modified data", modifiedData)
-    convertInMultiplier(modifiedData)  //function
-    
-  }
+  };
 
+  // Main Api call,
   useEffect(() => {
     setLoading(true);
     const fetch = async () => {
@@ -109,17 +122,21 @@ function Diet() {
       if (!data) {
         setError("Invalid Url or Diet Dosen't Exists! ");
       } else {
-        console.log("diet data in else:: isArray ", Array.isArray(data)); //is true here
-        console.log("diet data in else:: Data:: ", data);
+        // console.log("diet data in else:: isArray?", Array.isArray(data)); //is true here
+        console.log("Main :: Api call to backend :: Data:: ", data);
 
-        convertInMultiplier(data);
-        setInitialData(data)
-        
+        setCurrentData(data);
+
+        multipliers(data);
       }
       setLoading(false);
     };
     fetch();
   }, []);
+
+  useEffect(() => {
+    console.log("main currentData:: last useEffect", currentData);
+  }, [currentData]);
 
   useEffect(() => {}, []);
   useEffect(() => {}, []);
@@ -134,71 +151,87 @@ function Diet() {
       {error && <p>{error}</p>}
       {/* {dietArr && JSON.stringify(dietArr)} */}
 
-      {multiplierArr && (
-        <div className=" rounded-lg border border-grey-200 overflow-x-auto m-3 p-2">
-          <table>
-            <thead>
-              <tr>
-                {tableHeading.map((heading, index) =>
-                  heading === "Food name" ? (
-                    <th className="sticky left-0 bg-white " key={heading}>
-                      {heading}
-                    </th>
-                  ) : (
-                    <th key={heading}>{heading}</th>
-                  )
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {multiplierArr.map((foodObj) => (
-                <tr key={foodObj._id}>
+      <div className=" rounded-lg border border-grey-200 overflow-x-auto m-3 p-2">
+        <table>
+          <thead>
+            <tr>
+              {tableHeading.map((heading, index) =>
+                heading === "Food name" ? (
+                  <th className="" key={heading}>
+                    {heading}
+                  </th>
+                ) : (
+                  <th key={heading}>{heading}</th>
+                )
+              )}
+            </tr>
+          </thead>
+
+          <tbody>
+            {currentData &&
+              currentData.map((foodObj) => (
+                <tr key={foodObj._id} className="p-2">
                   {Object.keys(foodObj)
                     .filter((key) => key !== "_id" && key !== "__v")
                     .map((foodItem) =>
                       foodItem === "foodName" ? (
                         <td
                           key={foodItem}
-                          className="sticky left-0 bg-white shadow-xl"
+                          className=""
                         >
                           {foodObj[foodItem]}
                         </td>
                       ) : foodItem === "quantity" ? (
-                        <td key={foodItem}>
+                        <td 
+                        className=""
+                        key={foodItem}>
                           <Input
                             type="number"
                             value={foodObj[foodItem]}
-                            inputClassName="w-10"
-                            min='0'
-                            onChange={(e) => handleOnChange(Number(e.target.value), foodObj.foodName)}
+                            inputClassName="w-30"
+                            min="0"
+                            onChange={(e) =>
+                              handleOnChange(
+                                Number(e.target.value),
+                                foodObj.foodName
+                              )
+                            }
                           />
                         </td>
                       ) : (
-                        <td key={foodItem} className="text-center  w-300">
-                          {foodObj[foodItem]*foodObj.quantity}
+                        <td
+                          key={foodItem}
+                          className="text-center overflow-x-auto w-300 "
+                        >
+                          {roundToThree(foodObj[foodItem])}
                         </td>
                       )
                     )}
                 </tr>
               ))}
+            {totalMacros && (
               <tr>
                 {Object.keys(totalMacros).map((macro) =>
                   macro === "foodName" ? (
-                    <td key={totalMacros[macro]}>{totalMacros[macro]}</td>
+                    <td 
+                    className=""
+                    key={totalMacros[macro]}>{totalMacros[macro]}</td>
                   ) : macro === "quantity" ? (
                     <td key={totalMacros[macro]}></td>
                   ) : (
-                    <td key={totalMacros[macro]} className="text-center text-nowrap">
-                      {" "}
-                      {totalMacros[macro]}
+                    <td
+                      key={totalMacros[macro]}
+                      className="text-center text-nowrap"
+                    >
+                      {roundToThree(totalMacros[macro])}
                     </td>
                   )
                 )}
               </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

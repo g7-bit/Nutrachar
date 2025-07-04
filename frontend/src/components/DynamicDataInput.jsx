@@ -39,46 +39,55 @@ function DynamicDataInput({
               <Input
               label={`Food Name${index+1}`}
               type='text'
+              min='0'
               {...control.register(`${name}.${index}.foodName`,{required:true})}
               />
               <Input
               label={`Quantity`}
               type='number'
+              min='1'
               {...control.register(`${name}.${index}.quantity`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Protein/100gm`}
               type='number'
+              min='0'
               {...control.register(`${name}.${index}.protein`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`carbs/100gm`}
               type='number'
+              min='0'
               {...control.register(`${name}.${index}.carbs`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Fats/100gm`}
               type='number'
+              min='0'
               {...control.register(`${name}.${index}.fats`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Calories /100gm`}
               type='number'
+              min='0'
               {...control.register(`${name}.${index}.calories`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Sugar/100gm`}
               type='number'
+              min='0'
               {...control.register(`${name}.${index}.sugar`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Added Sugar /100gm`}
               type='number'
+              min='0'
               {...control.register(`${name}.${index}.addedSugar`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Saturated Fats /100gm`}
               type='number'
+              min='0'
               {...control.register(`${name}.${index}.saturatedFats`,{required:true,valueAsNumber: true})}
               />
 
