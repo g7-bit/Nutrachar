@@ -215,12 +215,12 @@ function Diet() {
                   macro === "foodName" ? (
                     <td 
                     className=""
-                    key={totalMacros[macro]}>{totalMacros[macro]}</td>
+                    key={macro}>{totalMacros[macro]}</td>
                   ) : macro === "quantity" ? (
                     <td key={totalMacros[macro]}></td>
                   ) : (
                     <td
-                      key={totalMacros[macro]}
+                      key={macro}
                       className="text-center text-nowrap"
                     >
                       {roundToThree(totalMacros[macro])}
