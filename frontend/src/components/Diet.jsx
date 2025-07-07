@@ -11,6 +11,7 @@ function Diet() {
   const [multiplierArr, setMultiplierArr] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalMacros, setTotalMacros] = useState({});
+  const [valForCharts, setValForCharts]= useState([])
 
   const tableHeading = [
     "Food name",
@@ -28,35 +29,28 @@ function Diet() {
   // setting Total row
 
 
-
-
-// Creating multiplier obj,  called by mainapi
-  let multiplierObj = [];
-  function multipliers(data) {
-    // console.log("inside func:: multiplier ", data);
-      multiplierObj = data.map((foodObj) =>{
-        const updatedFoodObj = {...foodObj}
-      Object.keys(updatedFoodObj).forEach((foodItem) => {
-        if (
-          typeof updatedFoodObj[foodItem] === "number" &&
-          foodItem !== "quantity" &&
-          foodItem !== "__v"
-        ) {
-          // console.log(" ", foodItem)
-          if(updatedFoodObj[foodItem] === 0){
-            updatedFoodObj[foodItem] = 0
-          }else{
-
-            updatedFoodObj[foodItem] = updatedFoodObj[foodItem] / updatedFoodObj.quantity;
-          }
-        }
-      })
-      return updatedFoodObj
-    }); 
+  function calculateData(data){
+    console.log("'data' inside calculated fn, ",data)
     
-    // console.log("final multiplier Obj", multiplierObj)
-    setMultiplierArr(multiplierObj)
+    const updatedArr = data.map((foodObj)=>{
+      
+      const newFoodObj = {...foodObj}
+      Object.keys(newFoodObj).forEach(foodItem=>{
+        if(typeof newFoodObj[foodItem] === 'number' && foodItem !== 'quantity' && foodItem !== '__v'){
+          // console.log(newFoodObj[foodItem], newFoodObj.quantity, foodItem)
+          newFoodObj[foodItem]= newFoodObj[foodItem] * newFoodObj.quantity
+        }
+        // console.log(foodObj.quantity)
+        // console.log(foodItem)
+      })
+      return newFoodObj;
+    })
+
+    setCurrentData(updatedArr)
   }
+
+
+
 
   // setting data for total row
   useEffect(() => {
@@ -80,6 +74,28 @@ function Diet() {
     }, {});
     // console.log("total boj", totalObj);
     setTotalMacros(totalObj);
+    
+    // const valForCharts = []
+
+    // Object.keys(totalObj).forEach(items=>{
+    //   if(items === 'fats' || items === 'carbs' || items === 'protein'){
+
+    //     const obj = {
+    //       name:items,
+    //       value: totalObj[items]
+    //     }
+    //     valForCharts.push(obj)
+    //   }
+        
+    // })
+
+      const valForCharts = ['fats', 'carbs', 'protein']
+    .map(key => ({ name: key, value: totalObj[key] }))
+
+    setValForCharts(valForCharts)
+
+    // const chartVals = totalObj.
+
   }, [currentData]);
 
   //Handle onChange
@@ -102,7 +118,7 @@ function Diet() {
               updatedFoodObj[foodItem] = multiplierObj[foodItem] * value
             }
           })
-          return updatedFoodObj
+          return updatedFoodObj           
         }
         return foodObj
       })
@@ -125,9 +141,10 @@ function Diet() {
         // console.log("diet data in else:: isArray?", Array.isArray(data)); //is true here
         console.log("Main :: Api call to backend :: Data:: ", data);
 
-        setCurrentData(data);
+        calculateData(data)
+        setMultiplierArr(data)
 
-        multipliers(data);
+
       }
       setLoading(false);
     };
@@ -135,7 +152,7 @@ function Diet() {
   }, []);
 
   useEffect(() => {
-    console.log("main currentData:: last useEffect", currentData);
+    // console.log("main currentData:: last useEffect", currentData);
   }, [currentData]);
 
   useEffect(() => {}, []);
@@ -234,7 +251,10 @@ function Diet() {
       </div>
       <div>
 
-      <Chart/>
+      <Chart
+      
+      data = {valForCharts}
+      />
       </div>
 
 
