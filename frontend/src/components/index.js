@@ -12,6 +12,8 @@ import DynamicImageInput from "./DynamicImageInput";
 import DynamicDataInput from "./DynamicDataInput";
 import Dashboard from "./Dashboard";
 import Diet from './Diet'
+import Chart from "./chart";
+
 
 
 export {
@@ -30,4 +32,5 @@ export {
     DynamicDataInput,
     Dashboard,   
     Diet,
+    Chart,
 }

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import dietService from "../expressBackend/diet";
 import { useParams } from "react-router-dom";
-import { Input } from "../components";
+import { Input, Chart } from "../components";
 
 function Diet() {
   const { dietId } = useParams();
@@ -232,6 +232,12 @@ function Diet() {
           </tbody>
         </table>
       </div>
+      <div>
+
+      <Chart/>
+      </div>
+
+
     </div>
   );
 }
