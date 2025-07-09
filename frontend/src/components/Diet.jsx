@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import dietService from "../expressBackend/diet";
-import { useParams } from "react-router-dom";
-import { Input, Chart } from "../components";
+import { useParams,Link } from "react-router-dom";
+import { Input, Chart,Button } from "../components";
 
 function Diet() {
   const { dietId } = useParams();
@@ -12,6 +12,8 @@ function Diet() {
   const [loading, setLoading] = useState(true);
   const [totalMacros, setTotalMacros] = useState({});
   const [valForCharts, setValForCharts] = useState([]);
+  const [isEditable, setIsEditable]= useState(false)
+
 
   const tableHeading = [
     "Food name",
@@ -130,6 +132,8 @@ function Diet() {
       });
       // console.log("updated handle onsubmit :: ", updatedFoodObj)
       setCurrentData(updatedFoodObj);
+      setIsEditable(true)
+
     }
   };
 
@@ -244,6 +248,17 @@ function Diet() {
           </tbody>
         </table>
       </div>
+
+
+  <div>
+    <Link to='/edit/'>
+      <Button>
+        Edit
+      </Button>
+    </Link>
+  </div>
+
+
       <div>
         <div className="m-3">
 
@@ -253,14 +268,14 @@ function Diet() {
 <br />
 <br />
         <div className="">
-          <div className="text-center text-green-500"> Reccomended Ratio</div>
+          <div className="text-center text-green-500"> Reccomended Ratio &#10026;</div>
           <div className="flex  opacity-85">
             
              <div className="flex-1  ">
                 <Chart
                   data={[
-                    { name: "Fats", value: 25 },
-                    { name: "Carbs", value: 30 },
+                    { name: "fats", value: 25 },
+                    { name: "carbs", value: 30 },
                     { name: "Protein", value: 45 },
                   ]}
                   userLabel="Weight loss"

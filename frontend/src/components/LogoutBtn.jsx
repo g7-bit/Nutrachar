@@ -5,7 +5,7 @@ import authService from '../expressBackend/auth'
 import { logout } from '../store/authslice'
 
 
-function LogoutBtn() {
+function LogoutBtn({className=""}) {
     const dispatch = useDispatch()
 
     const logoutHandler = ()=>{
@@ -19,6 +19,7 @@ function LogoutBtn() {
   return (
     <button
     onClick={logoutHandler}
+    className={className}
     >
         Logout
         

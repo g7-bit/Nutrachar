@@ -31,7 +31,7 @@ function Dashboard() {
     <div>
       {dietArray.length>0 ? 
       dietArray.map(diet=>(
-        <div key={diet}>
+        <div key={diet[0]}>
 
           <Link to= {`/diet/${diet[0]}`}>
             <p>Diet Id:   {diet[0]}</p>

@@ -41,6 +41,7 @@ const router = createBrowserRouter([
         path:"/diet/:dietId",
         element:<Diet/>
       },
+
       {
         path:"*",
         element: <FourZeroFour/>
