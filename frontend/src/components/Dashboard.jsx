@@ -12,7 +12,7 @@ function Dashboard() {
   const [dietArray, setDietArray] = useState([]);
 
   function formatDate(isoString){
-    const formatedDate = format(new Date(isoString), 'MMM dd, yyyy h:mm a'   )
+    const formatedDate = format(new Date(isoString), 'MMM dd, yyyy h:mm a')
     // console.log("date are ",formatedDate)
     return formatedDate
   }
