@@ -7,7 +7,7 @@ function EditPage() {
     const {dietId} = useParams()
     console.log("slug",dietId)
   return (
-<DietForm  />
+<DietForm isEditMode={true} />
   )
 }
 

@@ -17,6 +17,8 @@ function DietForm(isEditMode) {
   const dispatch = useDispatch()
   const storeDietData = useSelector((state)=>state.editData.dietData)
   console.log("store",storeDietData)
+
+ 
   
   const { register, handleSubmit, formState: { errors }, control } = useForm({
     defaultValues: {
@@ -30,6 +32,8 @@ function DietForm(isEditMode) {
   const [isImageInputVisible, setIsImageInputVisible] = useState(false);
 
   function makeImgFormData(data) {
+console.log("del 325,",isEditMode)
+    
     const formData = new FormData();
 
     let imgAndInput = data.dynField;
@@ -48,7 +52,7 @@ function DietForm(isEditMode) {
     return formData;
   }
 
-
+ 
 async function finalSave(formData){
       const save = await dietService.createNewDiet(formData); 
       if(save.success){
@@ -78,6 +82,7 @@ useEffect(()=>{
   // console.log("dietform.jsx: informal", )
   // let {status, status2}=verifyDataPresent()
   // console.log("status",status, "status2",status2)
+   if(isEditMode) setIsManualDataVisible(true)
 },[])
 
 
@@ -167,13 +172,14 @@ useEffect(()=>{
 
         {!isManualDataVisible && !isloading ? (
           <Button type="button" onClick={() => setIsManualDataVisible(true)}>
-            Add Data Manually
+            Add Data Manually 1
           </Button>
         ) : (
           <DynamicDataInput
             control={control}
             name="manualData"
             loading= {isloading}
+            storeFields = {storeDietData}
 
           />
         )} 

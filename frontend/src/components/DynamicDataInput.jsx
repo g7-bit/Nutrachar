@@ -5,6 +5,7 @@ import {Input, Button} from './index.js'
 function DynamicDataInput({
     control,
     name,
+    storeFields,
     fieldLabel = "field",
     loading= false,
     defaultItem = {
@@ -19,14 +20,24 @@ function DynamicDataInput({
       saturatedFats: ""
 }
 }) {
-    const {fields, append, remove}= useFieldArray({
+    let {fields, append, remove,replace}= useFieldArray({
         control,
-        name
+        name,
+      
         
     });
 
+     useEffect(()=>{console.log("curr fields", fields)},[fields])
 
     useEffect(()=>{
+      if(storeFields){
+        console.log("store is here")
+        replace(storeFields)
+      }else{
+        remove(0)
+        console.log("store isn't here")
+      }
+      console.log("initial fields",fields)
       console.log("dynamicInput.jsx:: fields", fields)
     },[])
   return (
@@ -43,55 +54,63 @@ function DynamicDataInput({
               <Input
               label={`Food Name${index+1}`}
               type='text'
-              min='0'
+              
               {...control.register(`${name}.${index}.foodName`,{required:true})}
               />
               <Input
               label={`Quantity`}
               type='number'
               min='1'
+              step='any'
               {...control.register(`${name}.${index}.quantity`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Protein/100gm`}
               type='number'
               min='0'
+              step='any'
               {...control.register(`${name}.${index}.protein`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`carbs/100gm`}
               type='number'
               min='0'
+              step='any'
               {...control.register(`${name}.${index}.carbs`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Fats/100gm`}
               type='number'
               min='0'
+              step='any'
               {...control.register(`${name}.${index}.fats`,{required:true,valueAsNumber: true})}
               />
-              <Input
+              {/* <Input
               label={`Calories /100gm`}
               type='number'
               min='0'
+              step='any'
               {...control.register(`${name}.${index}.calories`,{required:true,valueAsNumber: true})}
-              />
+              /> */}
               <Input
               label={`Sugar/100gm`}
               type='number'
               min='0'
+              step='any'
               {...control.register(`${name}.${index}.sugar`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Added Sugar /100gm`}
               type='number'
               min='0'
+              step='any'
               {...control.register(`${name}.${index}.addedSugar`,{required:true,valueAsNumber: true})}
               />
               <Input
               label={`Saturated Fats /100gm`}
               type='number'
               min='0'
+              step='any'
               {...control.register(`${name}.${index}.saturatedFats`,{required:true,valueAsNumber: true})}
               />
 
