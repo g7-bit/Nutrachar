@@ -102,9 +102,10 @@ function Diet() {
   // handle edit onchange
   const handleEditButton =()=>{
     console.log("edit was clicked")
+    
     dispatch(startEdit(currentData))
 
-    navigate('/dietForm')
+    navigate(`/edit-diet/${dietId}`)
 
 
   }

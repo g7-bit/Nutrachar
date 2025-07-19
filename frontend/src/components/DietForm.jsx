@@ -12,13 +12,14 @@ import dietService from "../expressBackend/diet.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function DietForm(isEditMode) {
+function DietForm({isEditMode, dietId}) {
   const navigate= useNavigate()
   const dispatch = useDispatch()
   const storeDietData = useSelector((state)=>state.editData.dietData)
   console.log("store",storeDietData)
 
- 
+ if(isEditMode) console.log("in EDIRT MODE, dietForm.jsx")
+  console.log("isEdiable fd", isEditMode, "existing diet Id", dietId)
   
   const { register, handleSubmit, formState: { errors }, control } = useForm({
     defaultValues: {
@@ -64,7 +65,7 @@ async function finalSave(formData){
       setIsLoading(false)
 }
 
-function verifyDataPresent(){
+function verifyDataPresent(data){
 
     const isDynFieldAbsent =
       data.dynField.length === 0 || Object.keys(data.dynField[0]).length === 0;
@@ -79,9 +80,8 @@ function verifyDataPresent(){
     return {isDynFieldAbsent,isManualDataFieldaAbsent,hasImageData,hasManualData}
 }
 useEffect(()=>{
-  // console.log("dietform.jsx: informal", )
-  // let {status, status2}=verifyDataPresent()
-  // console.log("status",status, "status2",status2)
+
+
    if(isEditMode) setIsManualDataVisible(true)
 },[])
 
@@ -90,7 +90,9 @@ useEffect(()=>{
     setError("");
     setIsLoading(true);
     console.log("dashboard.jsx:: form data:: ", data);
-    let {isDynFieldAbsent,isManualDataFieldaAbsent,hasImageData,hasManualData} = verifyDataPresent()
+
+    let {isDynFieldAbsent,isManualDataFieldaAbsent,hasImageData,hasManualData} = verifyDataPresent(data)
+    console.log("pasaf",isDynFieldAbsent,isManualDataFieldaAbsent,hasImageData,hasManualData)
 
     if (isDynFieldAbsent && isManualDataFieldaAbsent) {
       return setError("Please add some data");

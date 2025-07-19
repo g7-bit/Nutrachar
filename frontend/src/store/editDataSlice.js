@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     isEditMode: false,
     dietData: null,
+
 }
 
 const editDataSlice = createSlice({
@@ -12,6 +13,7 @@ const editDataSlice = createSlice({
         startEdit:(state,action)=>{
             state.isEditMode= true;
             state.dietData=action.payload
+            
         },
         
         endEdit:(state,action)=>{
