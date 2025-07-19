@@ -25,6 +25,10 @@ function DynamicDataInput({
         
     });
 
+
+    useEffect(()=>{
+      console.log("dynamicInput.jsx:: fields", fields)
+    },[])
   return (
     <div>
       <ul 

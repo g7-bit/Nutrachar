@@ -10,6 +10,7 @@ import store from './store/store.js'
 import SignupPage from './pages/SignupPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import FourZeroFour from './pages/FourZeroFour.jsx'
+import EditPage from './pages/EditPage.jsx'
 
 
 const router = createBrowserRouter([
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path:"/diet/:dietId",
         element:<Diet/>
+      },
+      {
+        path:"/edit-diet/:dietId",
+        element:<EditPage/>
       },
       {
         path:"*",

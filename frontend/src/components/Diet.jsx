@@ -1,17 +1,23 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import dietService from "../expressBackend/diet";
-import { useParams } from "react-router-dom";
-import { Input, Chart } from "../components";
+import { useParams, Link, useNavigate  } from "react-router-dom";
+import { Input, Chart, Button } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { startEdit } from "../store/editDataSlice";
 
 function Diet() {
+  const navigate= useNavigate()
+  const dispatch = useDispatch()
+  
+
   const { dietId } = useParams();
   const [error, setError] = useState(false);
   const [currentData, setCurrentData] = useState([]);
   const [multiplierArr, setMultiplierArr] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [totalMacros, setTotalMacros] = useState({});
-  const [valForCharts, setValForCharts] = useState([]);
+  const [totalMacros, setTotalMacros] = useState({}); //TODO: remove them 
+  const [valForCharts, setValForCharts] = useState([]);// Todo: remove them
 
   const tableHeading = [
     "Food name",
@@ -75,19 +81,7 @@ function Diet() {
     // console.log("total boj", totalObj);
     setTotalMacros(totalObj);
 
-    // const valForCharts = []
 
-    // Object.keys(totalObj).forEach(items=>{
-    //   if(items === 'fats' || items === 'carbs' || items === 'protein'){
-
-    //     const obj = {
-    //       name:items,
-    //       value: totalObj[items]
-    //     }
-    //     valForCharts.push(obj)
-    //   }
-
-    // })
 
     const valForCharts = ["fats", "carbs", "protein"].map((key) => ({
       name: key,
@@ -99,7 +93,19 @@ function Diet() {
     // const chartVals = totalObj.
   }, [currentData]);
 
-  //Handle onChange
+
+  // handle edit onchange
+  const handleEditButton =()=>{
+    console.log("edit was clicked")
+    dispatch(startEdit(currentData))
+
+    navigate('/dietForm')
+
+
+  }
+
+
+  //Handle onChange of data
   const handleOnChange = (value, fName) => {
     // console.log("handleOnchange Raw", value, fName);
     // console.log("HandleOnChange current Data in ", currentData); // old data with old Quantity value
@@ -136,6 +142,7 @@ function Diet() {
   // Main Api call,
   useEffect(() => {
     setLoading(true);
+    console.log("diet Id : ", dietId)
     const fetch = async () => {
       const data = await dietService.getSingleDiet(dietId);
       //   console.log("diet data from server", data);
@@ -156,6 +163,7 @@ function Diet() {
 
   useEffect(() => {
     // console.log("main currentData:: last useEffect", currentData);
+
   }, [currentData]);
 
   useEffect(() => {}, []);
@@ -244,6 +252,18 @@ function Diet() {
           </tbody>
         </table>
       </div>
+
+
+<div>
+  
+  <Button
+  onClick ={(e)=>handleEditButton()}
+  >
+    Edit  {dietId}
+  </Button>
+  
+</div>
+
       <div>
         <div className="m-3">
 

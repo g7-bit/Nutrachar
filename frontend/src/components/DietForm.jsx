@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, useFieldArray, set } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Input,
@@ -11,8 +12,12 @@ import dietService from "../expressBackend/diet.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function DietForm() {
+function DietForm(isEditMode) {
   const navigate= useNavigate()
+  const dispatch = useDispatch()
+  const storeDietData = useSelector((state)=>state.editData.dietData)
+  console.log("store",storeDietData)
+  
   const { register, handleSubmit, formState: { errors }, control } = useForm({
     defaultValues: {
       dynField: [{}],
@@ -54,10 +59,8 @@ async function finalSave(formData){
       }
       setIsLoading(false)
 }
-  const createDiet = async (data) => {
-    setError("");
-    setIsLoading(true);
-    console.log("dashboard.jsx:: form data:: ", data);
+
+function verifyDataPresent(){
 
     const isDynFieldAbsent =
       data.dynField.length === 0 || Object.keys(data.dynField[0]).length === 0;
@@ -67,6 +70,22 @@ async function finalSave(formData){
 
     const hasImageData = !isDynFieldAbsent;
     const hasManualData = !isManualDataFieldaAbsent;
+
+  
+    return {isDynFieldAbsent,isManualDataFieldaAbsent,hasImageData,hasManualData}
+}
+useEffect(()=>{
+  // console.log("dietform.jsx: informal", )
+  // let {status, status2}=verifyDataPresent()
+  // console.log("status",status, "status2",status2)
+},[])
+
+
+  const createDiet = async (data) => {
+    setError("");
+    setIsLoading(true);
+    console.log("dashboard.jsx:: form data:: ", data);
+    let {isDynFieldAbsent,isManualDataFieldaAbsent,hasImageData,hasManualData} = verifyDataPresent()
 
     if (isDynFieldAbsent && isManualDataFieldaAbsent) {
       return setError("Please add some data");
@@ -155,20 +174,9 @@ async function finalSave(formData){
             control={control}
             name="manualData"
             loading= {isloading}
-            defaultItem={{
-              foodName: "",
-              quantity: "",
-              protein: "",
-              carbs: "",
-              fats: "",
-              calories: "",
-              sugar: "",
-              addedSugar: "",
-              saturatedFats: "",
-            }}
-          />
-        )}
 
+          />
+        )} 
         {isloading ? 
 
         <Button 
