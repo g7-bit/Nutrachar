@@ -7,6 +7,13 @@ import { User } from "../models/user.model.js";
 import { Food } from "../models/food.model.js";
 import { Diet } from "../models/diet.model.js";
 
+
+
+
+
+
+
+
 const createDiet = asyncHandler(async (req, res) => {
   console.log("imagecontroller.jsx hello");
   console.log("req.boyd:RAW:: ", req.body);
@@ -167,7 +174,19 @@ const getSingleDiet= asyncHandler(async(req,res)=>{
   
 
 
+});
+
+const updateDiet = asyncHandler(async (req,res)=>{
+
+  console.log("req reached here")
+  console.log("req body RAW :: diet.controller.jsx:: ",req.body)
+  console.log("req user RAW :: diet.controller.jsx:: ",req.user)
+  // return res.status(201)
+  // .json(new ApiResponse(203, "Diet Data recieved"))
+
+  throw new ApiError(400, "Invalid DietId in Url, No Diet Found in DB")
+
 })
 
 
-export { createDiet, getAllDiets,getSingleDiet };
+export { createDiet, getAllDiets,getSingleDiet, updateDiet };
