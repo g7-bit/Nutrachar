@@ -181,8 +181,15 @@ const updateDiet = asyncHandler(async (req,res)=>{
   console.log("req reached here")
   console.log("req body RAW :: diet.controller.jsx:: ",req.body)
   console.log("req user RAW :: diet.controller.jsx:: ",req.user)
-  // return res.status(201)
-  // .json(new ApiResponse(203, "Diet Data recieved"))
+  
+  const dietId = req.params.dietId
+  
+  console.log("diet.controller.js:: updateDiet :: ", dietId)
+
+  // does diet exists?
+  // is owner of diet?
+  
+
 
   throw new ApiError(400, "Invalid DietId in Url, No Diet Found in DB")
 

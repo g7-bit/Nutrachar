@@ -164,9 +164,10 @@ function DietForm({ isEditMode, dietId }) {
 
       console.log("process data 23542", processedData)
       logFormData(processedData)
+      console.log("dietid inside handleform", dietId)
 
       const requesty = await axios.post(
-        "/api/v1/diet/update",
+        `/api/v1/diet/update/${dietId}`,
 
         processedData,
         {
