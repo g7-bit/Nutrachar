@@ -10,62 +10,7 @@ import { Diet } from "../models/diet.model.js";
 
 
 
-
-
-
-
-const createDiet = asyncHandler(async (req, res) => {
-  console.log("imagecontroller.jsx hello");
-  console.log("req.boyd:RAW:: ", req.body);
-  console.log("req.files :: RAW:: ", req.files);
-  console.log("req.user:: RAW ", req.user);
-
-  //checking empty manual data else Parsing it,  // converting manual data values to numbers
-
-  if (req.body.manualData === "") {
-    console.log("empty manual data");
-    throw new ApiError(400, "empty manual food data");
-  } else if (req.body.manualData) {
-    req.body.manualData = JSON.parse(req.body.manualData);
-  }
-  // changing quantity array ele to numbers
-  if (req.body.quantity) {
-    req.body.quantity = req.body.quantity.map(Number);
-  }
-
-  // ? checks if null/undefined before chekcing .length,
-  //   if req.body is undefined it makes the whole expression undefined
-  const noImageFile = req.files?.length === 0; //false
-  const noImageName = req.body?.foodNameforImage === undefined; // true
-  const noQuantityForimage = req.body?.quantity === undefined; // true
-  const noCompleteImage = noImageFile || noImageName || noQuantityForimage;
-
-  const imagePresent = !noCompleteImage;
-  const manualDataPresent = req.body?.manualData !== undefined;
-
-  async function addDietData(dietArray, userId) {
-    console.log("inside db walla unction, dietArray, ", dietArray);
-    console.log("inside db walla userID, ", userId);
-    try {
-      const foods = await Food.insertMany(dietArray);
-
-      if (!foods) throw new ApiError(500, "failed to create food items");
-      const foodIds = foods.map((food) => food._id);
-      // console.log(foodIds)
-
-      const userDiet = new Diet({
-        user: userId,
-        foodItems: foodIds,
-      });
-      const createdDiet = await userDiet.save();
-      console.log("diete, ", createdDiet);
-      return createdDiet;
-    } catch {
-      console.log("diet.controller.js:: something went wrig in db");
-      throw new ApiError(500, "Error occured when savind data in db");
-    }
-  }
-  async function processImage(files, body) {
+async function processImage(files, body) {
     let i = 0;
     let foodArray = [];
     for (const file of files) {
@@ -90,10 +35,23 @@ const createDiet = asyncHandler(async (req, res) => {
     return foodArray;
   }
 
-  // for incomplete image data
+
+async function checkValidData(req){
+ // // ? checks if null/undefined before chekcing .length,
+  // //   if req.body is undefined it makes the whole expression undefined
+  const noImageFile = req.files?.length === 0; //false
+  const noImageName = req.body?.foodNameforImage === undefined; // true
+  const noQuantityForimage = req.body?.quantity === undefined; // true
+  const noCompleteImage = noImageFile || noImageName || noQuantityForimage;
+
+  const imagePresent = !noCompleteImage;
+  const manualDataPresent = req.body?.manualData !== undefined;
+
+
+    // for incomplete image data
   if (!noImageFile || !noImageName) {
     if (noCompleteImage) {
-      throw new ApiError(400, "incomplete image data");
+      throw new ApiError(400, "incomplete image dataa");
     }
   }
 
@@ -101,6 +59,61 @@ const createDiet = asyncHandler(async (req, res) => {
     console.log("no data sent");
     throw new ApiError(400, "No data Or Invalid Data sent");
   }
+  return {noImageFile, noImageName,noQuantityForimage, noCompleteImage,imagePresent, manualDataPresent}
+}
+
+  async function parseData(req){
+
+      if (req.body.manualData === "") {
+    console.log("empty manual data");
+    throw new ApiError(400, "empty manual food data");
+  } else if (req.body.manualData) {
+    req.body.manualData = JSON.parse(req.body.manualData);
+  }
+  // changing quantity array ele to numbers
+  if (req.body.quantity) {
+    req.body.quantity = req.body.quantity.map(Number);
+  }
+  }
+
+
+const createDiet = asyncHandler(async (req, res) => {
+  console.log("imagecontroller.jsx hello");
+  console.log("req.boyd:RAW:: ", req.body);
+  console.log("req.files :: RAW:: ", req.files);
+  console.log("req.user:: RAW ", req.user);
+
+  //checking empty manual data else Parsing it,  // converting manual data values to numbers
+  parseData(req)
+
+
+  const {noImageFile, noImageName,noQuantityForimage, noCompleteImage,imagePresent, manualDataPresent} = await checkValidData(req)
+
+ 
+  async function addDietData(dietArray, userId) {
+    console.log("inside db walla unction, dietArray, ", dietArray);
+    console.log("inside db walla userID, ", userId);
+    try {
+      const foods = await Food.insertMany(dietArray);
+
+      if (!foods) throw new ApiError(500, "failed to create food items");
+      const foodIds = foods.map((food) => food._id);
+      // console.log(foodIds)
+
+      const userDiet = new Diet({
+        user: userId,
+        foodItems: foodIds,
+      });
+      const createdDiet = await userDiet.save();
+      console.log("diete, ", createdDiet);
+      return createdDiet;
+    } catch {
+      console.log("diet.controller.js:: something went wrig in db");
+      throw new ApiError(500, "Error occured when savind data in db");
+    }
+  }
+
+
 
   if (imagePresent && manualDataPresent) {
     console.log("BOth data present");
@@ -181,10 +194,16 @@ const updateDiet = asyncHandler(async (req,res)=>{
   console.log("req reached here")
   console.log("req body RAW :: diet.controller.jsx:: ",req.body)
   console.log("req user RAW :: diet.controller.jsx:: ",req.user)
+    console.log("req.files :: RAW:: ", req.files);
+
+
   
   const dietId = req.params.dietId
   
   console.log("diet.controller.js:: updateDiet :: ", dietId)
+
+  const processedImage = await processImage(req.files, req.body)
+  console.log("processsed image in update diet is ", processedImage)
 
   // does diet exists?
   // is owner of diet?
