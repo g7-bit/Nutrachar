@@ -44,6 +44,7 @@ export class DietService {
     return false
     }
   }
+  
 }
 
 const dietService = new DietService();
