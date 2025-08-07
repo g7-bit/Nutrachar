@@ -23,6 +23,9 @@ function Diet() {
 
   const [isEditable, setIsEditable]= useState(false)
 
+  // is user logged in? NO? visibility false
+  // logged in? check userId, 
+  // dietId, 
 
   const tableHeading = [
     "Food name",
@@ -168,6 +171,8 @@ function Diet() {
     };
     fetch();
   }, []);
+
+  useEffect(()=> {})
 
   useEffect(() => {
     // console.log("main currentData:: last useEffect", currentData);

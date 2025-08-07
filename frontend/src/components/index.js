@@ -13,6 +13,7 @@ import DynamicDataInput from "./DynamicDataInput";
 import Dashboard from "./Dashboard";
 import Diet from './Diet'
 import Chart from "./chart";
+import AuthLayout from "./AuthLayout";
 
 
 
@@ -33,4 +34,5 @@ export {
     Dashboard,   
     Diet,
     Chart,
+    AuthLayout,
 }
