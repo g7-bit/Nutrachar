@@ -82,6 +82,9 @@ function DietForm({ isEditMode, dietId }) {
     setIsLoading(false);
   }
 
+  // async function finalUpdate()
+
+
   function verifyDataPresent(data) {
     const isDynFieldAbsent =
       data.dynField.length === 0 || Object.keys(data.dynField[0]).length === 0;
@@ -159,28 +162,17 @@ function DietForm({ isEditMode, dietId }) {
 
     const { formData } = processWholeData(data);
     if (isEditMode) {
-      console.log("handle ");
 
       const processedData = processWholeData(data);
 
-      console.log("process data 23542", processedData)
-      logFormData(processedData)
-      console.log("dietid inside handleform", dietId)
+      // console.log("process data 23542", processedData)
+      // logFormData(processedData)
+      // console.log("dietid inside handleform", dietId)
 
-      const requesty = await axios.post(
-        `/api/v1/diet/update/${dietId}`,
-
-        processedData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      
-      console.log("requesty", requesty);
+      const save = await dietService.updateDiet(processedData, dietId);
+     console.log("save" ,save)
       dispatch(endEdit())
-      if(requesty?.data.message === "success"){
+      if(save?.data.message === "success"){
         navigate(`/diet/${dietId}`);
       }else{
         setError("Something went wrong while saving data")

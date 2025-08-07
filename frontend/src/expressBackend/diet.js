@@ -11,14 +11,13 @@ export class DietService {
         },
       });
       console.log("response from server::", requesty);
-      return {success: true}
+      return { success: true };
     } catch (error) {
       console.log(error.response?.data);
       return {
         success: false,
-        message: error.response?.data.message
-      }
-
+        message: error.response?.data.message,
+      };
     }
   }
   async getAllDiets() {
@@ -40,11 +39,30 @@ export class DietService {
 
       return dietresponse.data.data;
     } catch (error) {
-    console.log("dietJsx:: getsingle:: error:: ", error)
-    return false
+      console.log("dietJsx:: getsingle:: error:: ", error);
+      return false;
     }
   }
+
+  async updateDiet(processedData, dietId) {
+try {
+      const updated = await axios.post(
+        `/api/v1/diet/update/${dietId}`,
   
+        processedData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return updated
+} catch (error) {
+  console.log("diet.js:: updateDiet error:: ", error)
+  return false
+
+}
+  }
 }
 
 const dietService = new DietService();

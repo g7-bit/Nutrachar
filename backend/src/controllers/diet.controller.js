@@ -280,7 +280,7 @@ const updateDiet = asyncHandler(async (req, res) => {
     const updatedDiet =await updateDiet(finalArray, dietId);
 
     if (updatedDiet) {
-      console.log("inside if statement")
+      console.log("done")
       return res.status(200)
         .json(new ApiResponse(200, "Updated Diet data"));
     }
