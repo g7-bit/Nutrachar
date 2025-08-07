@@ -81,8 +81,17 @@ function DietForm({ isEditMode, dietId }) {
     }
     setIsLoading(false);
   }
-
-  // async function finalUpdate()
+    async function finalUpdate(processedData, dietId){
+      const save = await dietService.updateDiet(processedData, dietId);
+     console.log("save" ,save)
+      dispatch(endEdit())
+      if(save?.data.message === "success"){
+        navigate(`/diet/${dietId}`);
+      }else{
+        setError("Something went wrong while saving data")
+        setIsLoading(false)
+      }
+  }
 
 
   function verifyDataPresent(data) {
@@ -113,13 +122,6 @@ function DietForm({ isEditMode, dietId }) {
       hasImageData,
       hasManualData,
     } = verifyDataPresent(data);
-    // console.log(
-    //   "pasaf",
-    //   isDynFieldAbsent,
-    //   isManualDataFieldaAbsent,
-    //   hasImageData,
-    //   hasManualData
-    // );
 
     if (isDynFieldAbsent && isManualDataFieldaAbsent) {
       return setError("Please add some data");
@@ -133,7 +135,7 @@ function DietForm({ isEditMode, dietId }) {
       const manualDataforAxios = data.manualData;
       formData.append("manualData", JSON.stringify(manualDataforAxios));
 
-      // finalSave(formData)
+      
       return formData;
     } else if (hasImageData) {
       console.log("only image data present");
@@ -142,7 +144,7 @@ function DietForm({ isEditMode, dietId }) {
         console.log(key, value);
       });
 
-      // finalSave(formData)
+     
       return formData;
     } else if (hasManualData) {
       console.log("only Manual data present");
@@ -151,57 +153,29 @@ function DietForm({ isEditMode, dietId }) {
       formData.append("manualData", JSON.stringify(manualDataforAxios));
       console.log("reached here in dietForm.jsx 234");
       return formData;
-      // finalSave(formData)
+    
     }
   }
+
+
 
   const handleForm = async (data) => {
     setError("");
     setIsLoading(true);
     console.log("dashboard.jsx:: form data:: ", data);
 
-    const { formData } = processWholeData(data);
+    // const { formData } = processWholeData(data);
+    const processedData = processWholeData(data);
     if (isEditMode) {
 
-      const processedData = processWholeData(data);
-
-      // console.log("process data 23542", processedData)
-      // logFormData(processedData)
-      // console.log("dietid inside handleform", dietId)
-
-      const save = await dietService.updateDiet(processedData, dietId);
-     console.log("save" ,save)
-      dispatch(endEdit())
-      if(save?.data.message === "success"){
-        navigate(`/diet/${dietId}`);
-      }else{
-        setError("Something went wrong while saving data")
-        setIsLoading(false)
-      }
+      // const processedData = processWholeData(data);
+      finalUpdate(processedData, dietId)
     } else {
-      const processedData = processWholeData(data);
+      // const processedData = processWholeData(data);
       finalSave(processedData);
     }
   };
 
-  // const idea = 'ArandomIdea'
-  // formData.append("Thought",idea )
-
-  // formData.forEach((value, key) => {
-  //   console.log(key, value);
-  // });
-
-  // try {
-  //   let dietreq = await axios.post("api/v1/diet/newDiet", formData, {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //   });
-  //   console.log("newDiet resposne:: ", dietreq);
-  // } catch (error) {
-  //   console.log(error);
-  // }
-  // };
 
   return (
     <div>
