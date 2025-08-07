@@ -66,7 +66,8 @@ async function checkValidData(req) {
 }
 
 async function parseData(req) {
-  if (req.body.manualData === "") {
+  console.log("manual data? : ", req.body?.manualData)
+  if (req.body.manualData === "" ) {
     console.log("empty manual data");
     throw new ApiError(400, "empty manual food data");
   } else if (req.body.manualData) {
@@ -234,8 +235,6 @@ const updateDiet = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Unauthorized, You're not the owner of the diet");
   }
 
-  parseData(req);
-
   const {
     noImageFile,
     noImageName,
@@ -244,6 +243,8 @@ const updateDiet = asyncHandler(async (req, res) => {
     imagePresent,
     manualDataPresent,
   } = await checkValidData(req);
+  parseData(req);
+
 
   //TODO: implement mongoose transaction sessions.
   async function updateDiet(finalArray, dietId) {

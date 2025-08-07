@@ -34,7 +34,7 @@ function DynamicDataInput({
         console.log("store is here")
         replace(storeFields)
       }else{
-        remove(0)
+        // remove(0)
         console.log("store isn't here")
       }
       console.log("initial fields",fields)

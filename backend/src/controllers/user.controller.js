@@ -114,16 +114,23 @@ const loginUser = asyncHandler ( async (req,res)=>{
         "-password -refreshToken"
     )
 
-    const options  = {
+    const accOptions  = {
         httpOnly : true,
         secure : true,
+        maxAge: 24 * 60 * 60 * 1000,
+    }
+    const refOptions  = {
+        httpOnly : true,
+        secure : true,
+        maxAge: 10 * 24 * 60 * 60 * 1000,
+
     }
 
     console.log("Server: user.controller:: loginUser:: user loggedIn successfully")
     return res
     .status(200)
-    .cookie("accessToken",accessToken,options)
-    .cookie("refreshToken", refreshToken,options)
+    .cookie("accessToken",accessToken,accOptions)
+    .cookie("refreshToken", refreshToken,refOptions)
     .json(
         new ApiResponse(200,
             {
@@ -188,15 +195,22 @@ const refreshAccessToken = asyncHandler(async (req,res)=>{
         // const {accessToken, refreshToken} = await genRefreshAndAccessToken(user._id)
         const {newAccessToken} = await genNewAccessToken(user._id)
 
-        const options = {
-            httpOnly: true,
-            secure: true,
-        }
+    const accOptions  = {
+        httpOnly : true,
+        secure : true,
+        maxAge: 24 * 60 * 60 * 1000,
+    }
+    const refOptions  = {
+        httpOnly : true,
+        secure : true,
+        maxAge: 10 * 24 * 60 * 60 * 1000,
+
+    }
 
         return res
         .status(200)
-        .cookie("accessToken",newAccessToken,options)
-        .cookie("refreshToken",incomingRefreshToken,options)
+    .cookie("accessToken",accessToken,accOptions)
+    .cookie("refreshToken", refreshToken,refOptions)
         .json(
             new ApiResponse(
                 200,

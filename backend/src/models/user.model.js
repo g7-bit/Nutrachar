@@ -59,12 +59,13 @@ userSchema.methods.generateAccessToken = function (){
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
-            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+            expiresIn: "1d"
         }
         
     )
 }
 userSchema.methods.generateRefreshToken = function (){
+    console.log("ref token sec",process.env.REFRESH_TOKEN_EXPIRY)
     return jwt.sign(
         {
             _id: this._id,

@@ -74,7 +74,7 @@ function DietForm({ isEditMode, dietId }) {
     logFormData(formData)
     const save = await dietService.createNewDiet(formData);
     if (save.success) {
-      navigate("/dashboard");
+      navigate(-1);
     } else if (!save.success) {
       console.log("dietForm.jsx, INVALID else", save.message);
       setError(save.message);
@@ -86,7 +86,8 @@ function DietForm({ isEditMode, dietId }) {
      console.log("save" ,save)
       dispatch(endEdit())
       if(save?.data.message === "success"){
-        navigate(`/diet/${dietId}`);
+        navigate(-1);
+        // navigate(`/diet/${dietId}`, {replace: true});
       }else{
         setError("Something went wrong while saving data")
         setIsLoading(false)
@@ -104,6 +105,12 @@ function DietForm({ isEditMode, dietId }) {
     const hasImageData = !isDynFieldAbsent;
     const hasManualData = !isManualDataFieldaAbsent;
 
+    if(!hasImageData && !hasManualData){
+      setIsLoading(false)
+      setError("Form can't be empty")
+      return false
+    }
+
     return {
       isDynFieldAbsent,
       isManualDataFieldaAbsent,
@@ -116,12 +123,15 @@ function DietForm({ isEditMode, dietId }) {
   }, []);
 
   function processWholeData(data) {
+    let verified = verifyDataPresent(data);
+    if (!verified) return false;
     let {
       isDynFieldAbsent,
       isManualDataFieldaAbsent,
       hasImageData,
       hasManualData,
-    } = verifyDataPresent(data);
+    } = verified;
+
 
     if (isDynFieldAbsent && isManualDataFieldaAbsent) {
       return setError("Please add some data");
@@ -164,14 +174,15 @@ function DietForm({ isEditMode, dietId }) {
     setIsLoading(true);
     console.log("dashboard.jsx:: form data:: ", data);
 
-    // const { formData } = processWholeData(data);
+
     const processedData = processWholeData(data);
+    if(!processedData) return false
     if (isEditMode) {
 
-      // const processedData = processWholeData(data);
+
       finalUpdate(processedData, dietId)
     } else {
-      // const processedData = processWholeData(data);
+
       finalSave(processedData);
     }
   };
