@@ -207,11 +207,17 @@ const getSingleDiet = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid DietId in Url, No Diet Found in DB");
   // console.log("diet id:: ",data.foodItems)
 
-  const finalDataArray = data.foodItems;
+  const dataArray = data.foodItems;
+  const ownerId= data.user
+
+  const dataObj = {
+    dataArray,
+    ownerId
+  }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, finalDataArray, "Diet Data recieved"));
+    .json(new ApiResponse(200, dataObj, "Diet Data recieved"));
 });
 
 const updateDiet = asyncHandler(async (req, res) => {

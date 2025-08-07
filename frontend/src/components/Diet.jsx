@@ -11,6 +11,7 @@ import { startEdit } from "../store/editDataSlice";
 function Diet() {
   const navigate= useNavigate()
   const dispatch = useDispatch()
+  const loggedInUserData = useSelector((state)=>state.auth.userData)
   
 
   const { dietId } = useParams();
@@ -21,7 +22,9 @@ function Diet() {
   const [totalMacros, setTotalMacros] = useState({}); //TODO: remove them 
   const [valForCharts, setValForCharts] = useState([]);// Todo: remove them
 
-  const [isEditable, setIsEditable]= useState(false)
+  const [IsOwner, setIsOwner]= useState(false)
+  const [ownerId, setOwnerId] = useState()
+
 
   // is user logged in? NO? visibility false
   // logged in? check userId, 
@@ -145,7 +148,7 @@ function Diet() {
       });
       // console.log("updated handle onsubmit :: ", updatedFoodObj)
       setCurrentData(updatedFoodObj);
-      setIsEditable(true)
+      // setsetIsOwner(true)
 
     }
   };
@@ -162,25 +165,44 @@ function Diet() {
         setError("Invalid Url or Diet Dosen't Exists! ");
       } else {
         // console.log("diet data in else:: isArray?", Array.isArray(data)); //is true here
-        console.log("Main :: Api call to backend :: Data:: ", data);
+        // console.log("Main :: Api call to backend :: Main data:: ", data);
+        let {dataArray, ownerId}= data
+        setOwnerId(ownerId)
 
-        calculateData(data);
-        setMultiplierArr(data);
+        calculateData(dataArray);
+        setMultiplierArr(dataArray);
       }
       setLoading(false);
     };
     fetch();
   }, []);
 
-  useEffect(()=> {})
+  // useEffect(()=> {})
 
+  // useEffect(() => {
+  //   // console.log("main currentData:: last useEffect", currentData);
+
+  // }, [currentData]);
+
+  
+  // useEffect(() => {}, []);
   useEffect(() => {
-    // console.log("main currentData:: last useEffect", currentData);
 
-  }, [currentData]);
+    console.log("userData", loggedInUserData?._id)
 
-  useEffect(() => {}, []);
-  useEffect(() => {}, []);
+    // if(loggedInUserData?._id){
+    //   console.log("loggeduserdarta", loggedInUserData._id)
+    //   console.log("owenrId", ownerId)
+    //   if(loggedInUserData._id === ownerId) setsetIsOwner(true)
+      
+    // }else{
+    //   setsetIsOwner(false)
+    // }
+
+    setIsOwner(loggedInUserData?._id === ownerId)
+  }, [ownerId]);
+
+
 
   return (
     <div className="mb-10">
@@ -273,12 +295,14 @@ function Diet() {
   onClick= {(e)=>navigate(`/dashboard`)}>
    &larr; Dashboard
   </Button>  
+  {IsOwner && 
   <Button
   onClick ={(e)=>handleEditButton()}
   >
     Edit  {dietId}
   </Button>
-
+  
+  }
 </div>
 
 
