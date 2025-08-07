@@ -245,16 +245,13 @@ const updateDiet = asyncHandler(async (req, res) => {
     manualDataPresent,
   } = await checkValidData(req);
 
+  //TODO: implement mongoose transaction sessions.
   async function updateDiet(finalArray, dietId) {
     try {
-
-      const dietForDeleting = await Diet.findOne({_id: dietId})
-      const foodIdsForDeleting = dietForDeleting.foodItems
-      await Food.deleteMany({_id: {$in: foodIdsForDeleting}})
-      await Diet.updateOne(
-        { _id: dietId },
-        { $set: { foodItems: [] } }
-      );
+      const existingDiet = await Diet.findOne({ _id: dietId });
+      const existingFoodItems = existingDiet.foodItems;
+      await Food.deleteMany({ _id: { $in: existingFoodItems } });
+      await Diet.updateOne({ _id: dietId }, { $set: { foodItems: [] } });
 
       const foods = await Food.insertMany(finalArray);
 
@@ -265,9 +262,12 @@ const updateDiet = asyncHandler(async (req, res) => {
         { _id: dietId },
         { $set: { foodItems: foodIds } }
       );
-
       console.log("new diet is ", diet);
-    } catch (error) {}
+      return diet;
+    } catch (error) {
+      console.log("error occured while updating, :: error", error);
+      throw new ApiError(500, "Something went wrong while updating data");
+    }
   }
 
   const finalArray = await createFinalArray(
@@ -277,7 +277,13 @@ const updateDiet = asyncHandler(async (req, res) => {
   );
   if (finalArray) {
     console.log("final array for updating, after everythig is : ", finalArray);
-    updateDiet(finalArray, dietId);
+    const updatedDiet =await updateDiet(finalArray, dietId);
+
+    if (updatedDiet) {
+      console.log("inside if statement")
+      return res.status(200)
+        .json(new ApiResponse(200, "Updated Diet data"));
+    }
   } else {
     console.log("no finalArray found, if else block");
     throw new ApiError(500, "Error Processing data by the server");
@@ -286,7 +292,7 @@ const updateDiet = asyncHandler(async (req, res) => {
   // does diet exists?
   // is owner of diet?
 
-  throw new ApiError(400, "Invalid DietId in Url, No Diet Found in DB");
+
 });
 
 export { createDiet, getAllDiets, getSingleDiet, updateDiet };

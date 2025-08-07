@@ -262,14 +262,18 @@ function Diet() {
       </div>
 
 
-<div>
-  
+<div className="flex justify-between" >
+
+  <Button
+  onClick= {(e)=>navigate(`/dashboard`)}>
+   &larr; Dashboard
+  </Button>  
   <Button
   onClick ={(e)=>handleEditButton()}
   >
     Edit  {dietId}
   </Button>
-  
+
 </div>
 
 

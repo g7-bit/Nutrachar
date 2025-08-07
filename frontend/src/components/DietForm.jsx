@@ -11,6 +11,7 @@ import {
 import dietService from "../expressBackend/diet.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { endEdit } from "../store/editDataSlice.js";
 
 function DietForm({ isEditMode, dietId }) {
   const navigate = useNavigate();
@@ -176,7 +177,15 @@ function DietForm({ isEditMode, dietId }) {
           },
         }
       );
+      
       console.log("requesty", requesty);
+      dispatch(endEdit())
+      if(requesty?.data.message === "success"){
+        navigate(`/diet/${dietId}`);
+      }else{
+        setError("Something went wrong while saving data")
+        setIsLoading(false)
+      }
     } else {
       const processedData = processWholeData(data);
       finalSave(processedData);
