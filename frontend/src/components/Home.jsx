@@ -8,25 +8,6 @@ import {Button} from '../components'
 function Home() {
 
 
-// useEffect(()=>{
-//     const username= "Girdhar"
-//     const email= 'email@email.com'
-//     const password= "email1234"
-
-// const fetchData = async ()=>{
-//     const userI= await authService.login({username, password})
-//     // const userInfo= await  authService.getCurrentUser()
-//     // const reftoken = await authService.getNewAccessToken()
-//     setTimeout(async()=>{
-//       const logoutfn = await authService.logout()
-//     },3000)
-// }
-// fetchData()
-//   },[])
-
-
-
-
   return (
     
     <div>

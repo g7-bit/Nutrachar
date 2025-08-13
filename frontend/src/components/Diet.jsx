@@ -1,34 +1,30 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import dietService from "../expressBackend/diet";
-import { useParams, Link, useNavigate  } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Input, Chart, Button } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { startEdit } from "../store/editDataSlice";
 
-
-
 function Diet() {
-  const navigate= useNavigate()
-  const dispatch = useDispatch()
-  const loggedInUserData = useSelector((state)=>state.auth.userData)
-  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loggedInUserData = useSelector((state) => state.auth.userData);
 
   const { dietId } = useParams();
   const [error, setError] = useState(false);
   const [currentData, setCurrentData] = useState([]);
   const [multiplierArr, setMultiplierArr] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [totalMacros, setTotalMacros] = useState({}); //TODO: remove them 
-  const [valForCharts, setValForCharts] = useState([]);// Todo: remove them
+  const [totalMacros, setTotalMacros] = useState({}); //TODO: remove them
+  const [valForCharts, setValForCharts] = useState([]); // Todo: remove them
 
-  const [IsOwner, setIsOwner]= useState(false)
-  const [ownerId, setOwnerId] = useState()
-
+  const [IsOwner, setIsOwner] = useState(false);
+  const [ownerId, setOwnerId] = useState();
 
   // is user logged in? NO? visibility false
-  // logged in? check userId, 
-  // dietId, 
+  // logged in? check userId,
+  // dietId,
 
   const tableHeading = [
     "Food name",
@@ -92,8 +88,6 @@ function Diet() {
     // console.log("total boj", totalObj);
     setTotalMacros(totalObj);
 
-
-
     const valForCharts = ["fats", "carbs", "protein"].map((key) => ({
       name: key,
       value: totalObj[key],
@@ -104,18 +98,24 @@ function Diet() {
     // const chartVals = totalObj.
   }, [currentData]);
 
-
   // handle edit onchange
-  const handleEditButton =()=>{
-    console.log("edit was clicked")
-    
-    dispatch(startEdit(currentData))
-
-    navigate(`/edit-diet/${dietId}`)
-
-
-  }
-
+  const handleEditButton = () => {
+    console.log("edit was clicked");
+    dispatch(startEdit(currentData));
+    navigate(`/edit-diet/${dietId}`);
+  };
+  const handleDeleteButton = async () => {
+    try {
+      const deleted = await axios.post(`/api/v1/diet/delete/${dietId}`);
+      if (deleted) {
+        // console.log("dleted res ", deleted.status)
+        navigate(`/dashboard`);
+      }
+    } catch (error) {
+      console.log("deleted error resposnt:: ,", error);
+      setError(error.message);
+    }
+  };
 
   //Handle onChange of data
   const handleOnChange = (value, fName) => {
@@ -149,7 +149,6 @@ function Diet() {
       // console.log("updated handle onsubmit :: ", updatedFoodObj)
       setCurrentData(updatedFoodObj);
       // setsetIsOwner(true)
-
     }
   };
 
@@ -166,8 +165,8 @@ function Diet() {
       } else {
         // console.log("diet data in else:: isArray?", Array.isArray(data)); //is true here
         // console.log("Main :: Api call to backend :: Main data:: ", data);
-        let {dataArray, ownerId}= data
-        setOwnerId(ownerId)
+        let { dataArray, ownerId } = data;
+        setOwnerId(ownerId);
 
         calculateData(dataArray);
         setMultiplierArr(dataArray);
@@ -184,25 +183,21 @@ function Diet() {
 
   // }, [currentData]);
 
-  
   // useEffect(() => {}, []);
   useEffect(() => {
-
-    console.log("userData", loggedInUserData?._id)
+    console.log("userData", loggedInUserData?._id);
 
     // if(loggedInUserData?._id){
     //   console.log("loggeduserdarta", loggedInUserData._id)
     //   console.log("owenrId", ownerId)
     //   if(loggedInUserData._id === ownerId) setsetIsOwner(true)
-      
+
     // }else{
     //   setsetIsOwner(false)
     // }
 
-    setIsOwner(loggedInUserData?._id === ownerId)
+    setIsOwner(loggedInUserData?._id === ownerId);
   }, [ownerId]);
-
-
 
   return (
     <div className="mb-10">
@@ -211,7 +206,7 @@ function Diet() {
       </div>
 
       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {error && <p className="text-red-500 text-center">{error}</p>}
       {/* {dietArr && JSON.stringify(dietArr)} */}
 
       <div className=" rounded-lg border border-grey-200 overflow-x-auto m-3 p-2">
@@ -288,84 +283,71 @@ function Diet() {
         </table>
       </div>
 
+      <div className="flex justify-between">
+        <Button onClick={(e) => navigate(`/dashboard`)}>
+          &larr; Dashboard
+        </Button>
+        {IsOwner && (
+          <div>
+            <Button onClick={(e) => handleEditButton()}>Edit</Button>
 
-<div className="flex justify-between" >
-
-  <Button
-  onClick= {(e)=>navigate(`/dashboard`)}>
-   &larr; Dashboard
-  </Button>  
-  {IsOwner && 
-  <Button
-  onClick ={(e)=>handleEditButton()}
-  >
-    Edit  {dietId}
-  </Button>
-  
-  }
-</div>
-
-
-
-
+            <Button onClick={(e) => handleDeleteButton()}>Delete</Button>
+          </div>
+        )}
+      </div>
 
       <div>
         <div className="m-3">
-
-        <Chart data={valForCharts} />
+          <Chart data={valForCharts} />
         </div>
-<br />
-<br />
-<br />
+        <br />
+        <br />
+        <br />
         <div className="">
-          <div className="text-center text-green-500"> Reccomended Ratio &#10026;</div>
+          <div className="text-center text-green-500">
+            {" "}
+            Reccomended Ratio &#10026;
+          </div>
           <div className="flex  opacity-85">
-            
-             <div className="flex-1  ">
-                <Chart
-                  data={[
-                    { name: "fats", value: 25 },
-                    { name: "carbs", value: 30 },
-                    { name: "Protein", value: 45 },
-                  ]}
-                  userLabel="Weight loss"
-                  height={160}
-                  circleRadius={50}                  
-                />
-              </div>
+            <div className="flex-1  ">
+              <Chart
+                data={[
+                  { name: "fats", value: 25 },
+                  { name: "carbs", value: 30 },
+                  { name: "Protein", value: 45 },
+                ]}
+                userLabel="Weight loss"
+                height={160}
+                circleRadius={50}
+              />
+            </div>
 
-              
+            <div className="flex-1 ">
+              <Chart
+                data={[
+                  { name: "Fats", value: 25 },
+                  { name: "Carbs", value: 50 },
+                  { name: "Protein", value: 25 },
+                ]}
+                userLabel="Maintenance"
+                height={160}
+                circleRadius={50}
+                width=""
+              />
+            </div>
 
-              <div className="flex-1 ">
-                <Chart
-                  data={[
-                    { name: "Fats", value: 25 },
-                    { name: "Carbs", value: 50 },
-                    { name: "Protein", value: 25 },
-                  ]}
-                  userLabel="Maintenance"
-                  height={160}
-                  circleRadius={50}
-                  width=""
-                />
-              </div>
-
-
-              <div className="flex-1">
-                
-                <Chart
-                  data={[
-                    { name: "Fats", value: 20 },
-                    { name: "Carbs", value: 45 },
-                    { name: "Protein", value: 35 },
-                  ]}
-                  userLabel="Muscle Gain"
-                  height={160}
-                  circleRadius={50}
-                />
-                  
-              </div>
-
+            <div className="flex-1">
+              <Chart
+                data={[
+                  { name: "Fats", value: 20 },
+                  { name: "Carbs", value: 45 },
+                  { name: "Protein", value: 35 },
+                ]}
+                userLabel="Muscle Gain"
+                height={160}
+                circleRadius={50}
+              />
+            </div>
           </div>
         </div>
       </div>

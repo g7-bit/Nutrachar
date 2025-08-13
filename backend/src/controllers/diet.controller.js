@@ -302,4 +302,40 @@ const updateDiet = asyncHandler(async (req, res) => {
 
 });
 
-export { createDiet, getAllDiets, getSingleDiet, updateDiet };
+const deleteDiet = asyncHandler(async(req,res)=>{
+
+  console.log("req user id", req.user._id)
+  const dietId = req.params.dietId;
+  console.log("param diet id", dietId)
+
+  
+  try {
+    const existingDiet = await Diet.findOne({ _id: dietId });
+    if(existingDiet){
+      // check if owner, 
+      if(req.user._id.toString() === existingDiet.user.toString()){
+        // console.log("foodArray", existingDiet.foodItems)
+        const foodItems = existingDiet.foodItems
+        // console.log("fooditems", foodItems)
+        await Food.deleteMany({_id: {$in: foodItems}})
+        await Diet.deleteOne({_id: dietId})
+
+        return res.status(204)
+        .json(204,"successfully deleted")
+      }else{
+        throw new ApiError(401, "Unauthorized Request")
+      }
+    }else{      
+      throw new ApiError(404, "Diet does not exists")
+    }
+    
+  } catch (error) {
+    console.log("error in deleting data")
+    throw new ApiError(404, "Something went wrong while deleting on server ")
+
+  }
+
+  
+})
+
+export { createDiet, getAllDiets, getSingleDiet, updateDiet,deleteDiet };
