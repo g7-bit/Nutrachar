@@ -68,7 +68,7 @@ function Login() {
                 <div className="text-4xl text-center">
                   Login
                 </div>
-                <div className="text-wrap text-xs break-words text-center mb-5">
+                <div className="animate-fade-up-fast text-wrap text-xs break-words text-center mb-5">
                   Register for a better experience
                 </div>
                 <div>
