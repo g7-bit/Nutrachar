@@ -17,7 +17,7 @@ function Input({
     <div>
         {label && 
         <label
-        className={`block mb-1 ${labelClassName}`}
+        className={`animate-fade-up-fast block opacity-60 font-sans font-light ${labelClassName}`}
         htmlFor={id}
         >
             {label}
@@ -25,7 +25,7 @@ function Input({
 
         <input
         type={type}
-        className={inputClassName|| `bg-blue-300 rounded-2xl mb-5 mt-1 h-8 text-xl  `}
+        className={`${inputClassName} animate-fade-up-slow font-serif font-stretch-extra-expanded bg-blue-300 shadow-sm rounded-2xl mb-3 mt-1 text-xl p-2 text-center `}
         // placeholder={placeholder}
         {...props}
         ref={ref}
