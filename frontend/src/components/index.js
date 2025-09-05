@@ -12,9 +12,11 @@ import DynamicImageInput from "./DynamicImageInput";
 import DynamicDataInput from "./DynamicDataInput";
 import Dashboard from "./Dashboard";
 import Diet from './Diet'
-import Chart from "./chart";
+import Chart from "./Chart";
 import AuthLayout from "./AuthLayout";
 import LoginSidePane from "./LoginSidePane";
+import StaticCharts from "./StaticCharts";
+
 
 
 
@@ -38,5 +40,7 @@ export {
     Chart,
     AuthLayout,
     LoginSidePane,
+    StaticCharts,
+
   
 }
