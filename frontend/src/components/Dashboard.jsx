@@ -37,7 +37,7 @@ function Dashboard() {
       <div className=" animate-fade-up-slow flex justify-around flex-wrap gap-3 mt-5 md:p-6">
         {dietArray.length > 0 ? (
           dietArray.map((diet) => (
-            <Link to={`/diet/${diet[0]}`}>
+            <Link key={diet[0]} to={`/diet/${diet[0]}`}>
               <div
                 key={diet[0]}
                 className=" rounded-2xl bg-fuchsia-100 overflow-hidden px-15 py-7 md:p-10 shadow-md   btn-hover"
@@ -53,7 +53,7 @@ function Dashboard() {
             </Link>
           ))
         ) : (
-          isLoading ? <p>Loading...</p>: <p>No diet plans found. Create one to get started</p>
+          isLoading ? <p className="animate-pulsate">Loading...</p>: <p>No diet plans found. Create one to get started</p>
         )}
       </div>
 

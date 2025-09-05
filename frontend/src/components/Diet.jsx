@@ -42,7 +42,7 @@ function Diet() {
   // setting Total row
 
   function calculateData(data) {
-    console.log("'data' inside calculated fn, ", data);
+    // console.log("'data' inside calculated fn, ", data);
 
     const updatedArr = data.map((foodObj) => {
       const newFoodObj = { ...foodObj };
@@ -101,22 +101,30 @@ function Diet() {
 
   // handle edit onchange
   const handleEditButton = () => {
-    console.log("edit was clicked");
     dispatch(startEdit(currentData));
     navigate(`/edit-diet/${dietId}`);
   };
+
+
+
   const handleDeleteButton = async () => {
     try {
-      const deleted = await axios.post(`/api/v1/diet/delete/${dietId}`);
-      if (deleted) {
-        // console.log("dleted res ", deleted.status)
+      const deleted = await dietService.deleteDiet(dietId)
+      if(deleted){
+        console.log("deleted diet listing")
         navigate(`/dashboard`);
+      } else{
+        setError("something went wrong")
       }
-    } catch (error) {
-      console.log("deleted error resposnt:: ,", error);
-      setError(error.message);
+      }
+      catch(error){
+        console.log(error)
+      }
+
     }
-  };
+  
+
+
 
   //Handle onChange of data
   const handleOnChange = (value, fName) => {
@@ -178,11 +186,9 @@ function Diet() {
   }, []);
 
 
+  //check if Owner of diet
   useEffect(() => {
-    console.log("userData", loggedInUserData?._id);
-
-
-
+    // console.log("userData", loggedInUserData?._id);
     setIsOwner(loggedInUserData?._id === ownerId);
   }, [ownerId]);
 
@@ -190,14 +196,15 @@ function Diet() {
     <div className="mb-20 ">
 
 
-      {loading && <p>Loading...</p>}
+      {loading && <p  >Loading...</p>}
       {error && <p className="text-red-500 text-center">{error}</p>}
       {/* {dietArr && JSON.stringify(dietArr)} */}
+            
 
       <div className=" font-mono rounded-2xl bg-white border border-grey-200 overflow-x-auto m-3 p-3">
+              {loading && <tbody className="animate-pulsate">Loading...</tbody>}
         <table className="">
           <thead className="bg-blue-100  ">
-            {loading && <p>Loading...</p>}
             <tr className="animate-fade-up-fast">
               {tableHeading.map((heading, index) =>
                 heading === "Food name" ? (
@@ -212,7 +219,6 @@ function Diet() {
               )}
             </tr>
           </thead>
-
           <tbody>
             {currentData &&
               currentData.map((foodObj) => (
@@ -310,6 +316,7 @@ function Diet() {
         </div>
 
         <div className="fade-up-on-scroll mb-14">
+          {loading && <tbody className="flex justify-center animate-pulsate">Loading...</tbody>}
           <Chart data={valForCharts}
           // circleRadius={window.innerWidth <786 ? 90:50 }
            />

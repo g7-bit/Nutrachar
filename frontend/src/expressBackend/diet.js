@@ -23,7 +23,8 @@ export class DietService {
   async getAllDiets() {
     try {
       const allDietData = await axios.get("/api/v1/diet/getAllDiets");
-      console.log("diet.js:: alldeitedata", allDietData);
+      // console.log("diet.js:: alldeitedata", allDietData);
+      console.log("express backend:: diet.js:: gett all diet:: all diets loaded")
       // console.log("diet.js:: alldeitedata", allDietData.data.data);
       if (allDietData) {
         return allDietData.data.data;
@@ -45,10 +46,10 @@ export class DietService {
   }
 
   async updateDiet(processedData, dietId) {
-try {
+    try {
       const updated = await axios.post(
         `/api/v1/diet/update/${dietId}`,
-  
+
         processedData,
         {
           headers: {
@@ -56,12 +57,24 @@ try {
           },
         }
       );
-      return updated
-} catch (error) {
-  console.log("diet.js:: updateDiet error:: ", error)
-  return false
+      return updated;
+    } catch (error) {
+      console.log("diet.js:: updateDiet error:: ", error);
+      return false;
+    }
+  }
 
-}
+  async deleteDiet(dietId){
+        try {
+      const deleted = await axios.post(`/api/v1/diet/delete/${dietId}`);
+      if (deleted) {
+        return true
+      }
+    } catch (error) {
+      console.log("deleted error resposnt:: ,", error);
+      return false
+    }
+  
   }
 }
 

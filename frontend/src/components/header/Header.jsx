@@ -11,12 +11,12 @@ function Header() {
   const dispatch = useDispatch();
   const userDataInStore = useSelector((state) => state.auth.userData);
   const location = useLocation();
-  console.log(userDataInStore);
+  // console.log(userDataInStore);
 
   useEffect(() => {
     const fetchUser = async () => {
       if (userDataInStore === null) {
-        console.log("header.jsx::: called getcurretnUser");
+        // console.log("header.jsx::: called getcurretnUser");
         const userGet = await authService.getCurrentUser();
         if (userGet === undefined) return;
         dispatch(login(userGet.data.data));
