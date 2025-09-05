@@ -27,51 +27,63 @@ function Header() {
   }, [userDataInStore]);
   return (
     <>
-      <div className=" flex  justify-between items-center px-5">
-        {" "}
-        {/* md means mediam and up */}
-        <div>
-          
-          <Link to='/'><Logo ></Logo></Link>
-
-          
-        </div>
-        <div>
-           <Link to="/">How It works</Link>
-        </div>
-        <div className="flex gap-x-8 ">
-          {userDataInStore && location.pathname !== "/dashboard" && (
-            <div className="border rounded-2xl p-2">
-              
-              <Link to="/dashboard">Dashboard</Link>
+      <div className="flex justify-center p-2 md:p-5 transition-all duration-500 ease-in-out">
+        <div className="animate-fade-up-fast flex bg-white justify-between shadow-2xl items-center py-3 px-6 md:px-15 rounded-full  gap-5 md:gap-40 transition-all duration-500 ease-in-out">
+          {" "}
+          {/* md means mediam and up */}
+          <div className="transition-all duration-300 ease-in-out">
+            <Link to="/">
+              <Logo></Logo>
+            </Link>
+          </div>
+          <div className=" hidden md:block transition-all duration-300 ease-in-out">
+            <Link to="/">How It works</Link>
+          </div>
+          <div className="animate-fade-up-slow flex items-center gap-7 md:gap-40 transition-all duration-500 ease-in-out">
+            {userDataInStore && location.pathname !== "/dashboard" && (
+              <div className="shadow-xl text-basis hover:bg-red-200 btn-hover rounded-full md:p-2 transition-all duration-300 ease-in-out transform">
+                <Link to="/dashboard"> Dashboard</Link>
+              </div>
+            )}
+            <div className="transition-all duration-500 ease-in-out">
+              {userDataInStore ? (
+                <div className="flex gap-5 md:gap-10 items-center transition-all duration-300 ease-in-out">
+                  <div className="text-center transition-all duration-300 ease-in-out">
+                    <img
+                      src={userDataInStore.avatar}
+                      className=" w-10 h-10 md:w-16.5 md:h-15 rounded-full object-cover transition-all duration-300 ease-in-out"
+                    ></img>
+                    <i className="rounded-2xl shadow-xl">
+                      {userDataInStore.username}
+                    </i>
+                  </div>
+                  <div className="transition-all duration-300 ease-in-out">
+                    <LogoutBtn className="shadow-xl text-basis hover:bg-red-300 btn-hover rounded-full md:p-2 transition-all duration-300 ease-in-out" />
+                  </div>
+                </div>
+              ) : (
+                <div className="flex md:gap-3 transition-all duration-300 ease-in-out">
+                  <i>
+                    <p className="opacity-30">Login / Signup to continue </p>
+                  </i>
+                  {location.pathname !== "/login" && (
+                    <Link to="/login">
+                      <div className="border rounded-2xl mx-5 p-2 transition-all duration-300 ease-in-out hover:scale-105">
+                        Login
+                      </div>
+                    </Link>
+                  )}
+                  {location.pathname !== "/signup" && (
+                    <Link to="/signup">
+                      <div className="border rounded-2xl  p-2 transition-all duration-300 ease-in-out hover:scale-105">
+                        Signup
+                      </div>
+                    </Link>
+                  )}
+                </div>
+              )}
             </div>
-          )}
-
-          {userDataInStore   ? (
-            <div className="flex gap-3">
-              <div>
-                <LogoutBtn className="border rounded-2xl p-2" />
-              </div>
-              <div className="text-center">
-                <img src={userDataInStore.avatar}
-                className="w-15 h-15 rounded-2xl object-cover"
-                ></img>
-                <i>{userDataInStore.username}</i>
-              </div>
-            </div>
-          ) : (
-            <div className="flex gap-3">
-              <i>
-                <p className="opacity-30">not logged in</p>
-              </i>
-              <div className="border rounded-2xl p-2">
-                <Link to="/login">Login</Link>
-              </div>
-              <div className="border rounded-2xl p-2">
-                <Link to="/signup">Signup</Link>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </>

@@ -6,7 +6,7 @@ import {
 import { ApiError } from "../utils/ApiError.js";
 
 const ai = new GoogleGenAI({
-  apiKey: "AIzaSyAfuwoQw4XAMog_nLc8nYiFRXy0OTl_tNI",
+  apiKey: "AIzaSyAwcTQRCYxCoTTIRBpLNPMEkPC4vYxsxKU",
 });
 
 async function ocrProcessGemini(filePath) {
@@ -50,7 +50,7 @@ async function ocrProcessGemini(filePath) {
     // console.log("gemini.js:: parsedText", parsedText)
   } catch (error) {
     console.log("gemini.js:: catch error:: ", error);
-    // throw new ApiError(500, "google api error")
+    throw new ApiError(500, "google api error")
   }
   if (parsedObject.dietgem === "invalid") {
     throw new ApiError(400, "Please provide actual nutritinal label image");

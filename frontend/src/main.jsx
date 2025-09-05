@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         path: "/dietForm",
         element:(
           <AuthLayout authentication>
-            <DietForm />,
+            <DietForm />
           </AuthLayout>
         )
         
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         path: "/signup",
         element: (
           <AuthLayout authentication={false}>
-            <SignupPage />,
+            <SignupPage />
           </AuthLayout>
         ),
       },
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         path: "/login",
         element: (
           <AuthLayout authentication={false}>
-            <LoginPage />,
+            <LoginPage />
           </AuthLayout>
         ),
       },

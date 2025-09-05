@@ -8,7 +8,7 @@ function Logo({
   return (
   
     <img 
-    className='w-36  rounded-2xl'
+    className='w-15 md:w-36  rounded-2xl'
     src={logoimage}
      />
 

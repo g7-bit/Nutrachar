@@ -77,7 +77,7 @@ function DietForm({ isEditMode, dietId }) {
       navigate(-1);
     } else if (!save.success) {
       console.log("dietForm.jsx, INVALID else", save.message);
-      setError(save.message);
+      setError("Something went wrong at server");
     }
     setIsLoading(false);
   }
@@ -190,51 +190,65 @@ function DietForm({ isEditMode, dietId }) {
 
   return (
     <div>
-      <p>Halo</p>
-      {error && <p className="text-red-400 text-xl">{error}</p>}
+
+      {error && <p className="text-red-400 text-2xl font-bold mx-auto text-center">{error}</p>}
       <form
         onSubmit={handleSubmit(handleForm, (errors) => {
-          setError("*Please fill all fields and Images");
+          setError("*Please fill fields and Images");
 
           // console.log("errors are",errors)
         })}
       >
-        {!isImageInputVisible && !isloading ? (
-          <Button type="button" onClick={() => setIsImageInputVisible(true)}>
-            Add Images
-          </Button>
-        ) : (
-          <DynamicImageInput
-            control={control}
-            name="dynField"
-            fieldLabel="Food Nutritional Label"
-            defaultItem={{ foodName: "", image: "" }}
-            errors={errors}
-            loading={isloading}
-          />
-        )}
+        <div className="mt-5 md:mx-auto md:text-center md:mb-10">
+        
+          {!isImageInputVisible && !isloading ? (
+            <Button
+            type="button"
+            onClick={() => setIsImageInputVisible(true)}
+            className="btn-hover  text-white bg-blue-600 text-2xl rounded-full p-2 px-5"
+            >
+              Add Images
+            </Button>
+          ) : (
+            <DynamicImageInput
+              control={control}
+              name="dynField"
+              fieldLabel="Food Nutritional Label"
+              defaultItem={{ foodName: "", image: "" }}
+              errors={errors}
+              loading={isloading}
+              
+            />
+          )}
+          <hr className="mx-auto w-150 border-t-2 border-gray-300 my-4 "/>
+          {!isManualDataVisible && !isloading ? (
+            <Button type="button" onClick={() => setIsManualDataVisible(true)}
+            className="btn-hover text-white bg-blue-600 text-2xl rounded-full p-2 px-5" 
+            >
+              Add Data Manually
+            </Button>
+          ) : (
+            <DynamicDataInput
+              control={control}
+              name="manualData"
+              loading={isloading}
+              storeFields={storeDietData}
+            />
+          )}
+          </div>
+          <hr className="hr w-150"/>
 
-        {!isManualDataVisible && !isloading ? (
-          <Button type="button" onClick={() => setIsManualDataVisible(true)}>
-            Add Data Manually 1
-          </Button>
-        ) : (
-          <DynamicDataInput
-            control={control}
-            name="manualData"
-            loading={isloading}
-            storeFields={storeDietData}
-          />
-        )}
-        {isloading ? (
-          <Button disabled={!isloading} className="">
-            Loading...
-          </Button>
-        ) : (
-          <Button type="submit" className="">
-            Submit
-          </Button>
-        )}
+          <div className="flex justify-center">
+          {isloading ? (
+            <Button disabled={!isloading} className="btn-hover text-white shadow-lg bg-green-600 text-2xl rounded-full p-2 px-10 mb-10">
+              Loading...
+            </Button>
+          ) : (
+            <Button type="submit" className="btn-hover text-white shadow-lg bg-green-600 text-2xl rounded-full p-2 px-10 mb-10 ">
+              Submit
+            </Button>
+          )}
+      </div>
       </form>
     </div>
   );

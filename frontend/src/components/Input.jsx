@@ -25,7 +25,7 @@ function Input({
 
         <input
         type={type}
-        className={`${inputClassName} animate-fade-up-slow font-serif font-stretch-extra-expanded bg-blue-300 shadow-sm rounded-2xl mb-3 mt-1 text-xl p-2 text-center `}
+        className={`${inputClassName} animate-fade-up-slow font-serif font-stretch-extra-expanded bg-blue-300 shadow-sm rounded-2xl mb-3 mt-1 text-sm md:text-xl p-2 text-center `}
         // placeholder={placeholder}
         {...props}
         ref={ref}

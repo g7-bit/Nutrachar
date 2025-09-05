@@ -48,7 +48,7 @@ function DynamicDataInput({
           {fields.map((item, index)=>(
             <li
             key={item.id}
-            className='flex flex-wrap border m-2 p-2'
+            className='flex flex-wrap gap-2 m-2 p-2'
             >
 
               <Input
@@ -117,7 +117,7 @@ function DynamicDataInput({
               {!loading && 
               <Button
               type='button'
-              className='h-7 my-8 '
+              className='h-7 my-8 btn-hover text-white rounded-2xl bg-red-400'
               onClick={()=>remove(index)}
               >
                 Remove &#128465;
@@ -136,8 +136,9 @@ function DynamicDataInput({
         <Button
         type='button'
         onClick={()=>append(defaultItem)}
+        className='btn-hover text-white rounded-full py-2 px-4 text-xl ml-19 bg-indigo-500'
         >
-          add another manual food data
+          Add Manual Data +
         </Button>
         }
 
@@ -146,8 +147,10 @@ function DynamicDataInput({
          <Button
         type='button'
         onClick={()=>append(defaultItem)}
+        className='btn-hover transition-all delay-150 text-white rounded-full py-2 px-4 text-xl ml-19 bg-indigo-500'
+
         >
-        Add food data manually
+        Add food data manually.
         </Button>
         }
               </div>

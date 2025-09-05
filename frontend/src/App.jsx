@@ -26,12 +26,14 @@ function App() {
 
   
   return (
-    <>
+    <div className='bg-amber-100 min-h-screen flex flex-col'>
     
     <Header />
-    <Outlet/>
-    <Footer />
-    </>
+    <main className='flex-grow'>
+      <Outlet />
+    </main>
+    <Footer/>
+    </div>
   )
 }
 

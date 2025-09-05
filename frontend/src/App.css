@@ -3,17 +3,15 @@
   --animate-fade-in-scale-slow: fade-in-scale 0.5s ease-out;
   --animate-fade-in-scale: fade-in-scale 0.3s ease-out;
   --animate-fade-in-scale-fast: fade-in-scale 0.15s ease-out;
-  --animate-fade-up-fast: fade-up  ease 0.5s forwards;
-  --animate-fade-up-slow: fade-up  ease 0.8s forwards;
-  --animate-fade-up-slow2: fade-up  ease 1.2s forwards;
 
-
+  --animate-fade-up-fast: fade-up ease 0.5s forwards;
+  --animate-fade-up-superfast: fade-up ease 0.3s forwards;
+  --animate-fade-up-slow: fade-up ease 0.8s forwards;
+  --animate-fade-up-slow2: fade-up ease 1.2s forwards;
 
   @keyframes fade-in-scale {
     0% {
-      
       transform: scale(0.95);
-      
     }
     100% {
       transform: scale(1);
@@ -22,14 +20,12 @@
 }
 
 @keyframes grow-btn {
-    0% {
-      
-      transform: scale(1);
-      
-    }
-    100% {
-      transform: scale(1.25);
-    }
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.25);
+  }
 }
 
 @keyframes fade-up {
@@ -43,10 +39,62 @@
   }
 }
 
+@layer utilities {
+  .btn-hover {
+    @apply transition-all  duration-[250ms] ease-in-out delay-100  cursor-pointer hover:shadow-xl   hover:scale-105;
+  }
+  .icon-hover {
+    @apply transition-all  duration-[100ms] ease-in-out delay-100  cursor-pointer hover:shadow-xl   hover:scale-140;
+  }
+  .hr {
+    @apply mx-auto  border-t-2 border-gray-300 m-3;
+  }
+
+  
+}
+
+
+  .fade-up-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUpScroll ease-in both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+
+  /*
+  from Y40px  to  Y0px ,, from opacity 0 to 1  
+  */
+  .fade-up-on-scroll-fast {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUpScroll ease-in both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 20%;
+  }
+
+  /*
+  from Y40px  to  Y0px ,, from opacity 0 to 1  
+  */
+  @keyframes fadeUpScroll {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.interactive {
+  transition: all 250ms ease-in-out 100ms;
+  cursor: pointer;
+}
+.interactive:hover {
+  transform: scale(1.05);
+}
+
 /* 
  animation: fade-in-right ease 0.4s forwards;
  animation-delay: 0.8s; */
-
 
 /*
 Basic animation syntax

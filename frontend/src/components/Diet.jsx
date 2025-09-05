@@ -87,6 +87,7 @@ function Diet() {
     }, {});
     // console.log("total boj", totalObj);
     setTotalMacros(totalObj);
+    
 
     const valForCharts = ["fats", "carbs", "protein"].map((key) => ({
       name: key,
@@ -94,7 +95,7 @@ function Diet() {
     }));
 
     setValForCharts(valForCharts);
-
+    setLoading(false)
     // const chartVals = totalObj.
   }, [currentData]);
 
@@ -171,51 +172,38 @@ function Diet() {
         calculateData(dataArray);
         setMultiplierArr(dataArray);
       }
-      setLoading(false);
+
     };
     fetch();
   }, []);
 
-  // useEffect(()=> {})
 
-  // useEffect(() => {
-  //   // console.log("main currentData:: last useEffect", currentData);
-
-  // }, [currentData]);
-
-  // useEffect(() => {}, []);
   useEffect(() => {
     console.log("userData", loggedInUserData?._id);
 
-    // if(loggedInUserData?._id){
-    //   console.log("loggeduserdarta", loggedInUserData._id)
-    //   console.log("owenrId", ownerId)
-    //   if(loggedInUserData._id === ownerId) setsetIsOwner(true)
 
-    // }else{
-    //   setsetIsOwner(false)
-    // }
 
     setIsOwner(loggedInUserData?._id === ownerId);
   }, [ownerId]);
 
   return (
-    <div className="mb-10">
-      <div className="text-red-400 md:text-green-400 ">
-        Width COlor sm: red, md: green
-      </div>
+    <div className="mb-20 ">
+
 
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500 text-center">{error}</p>}
       {/* {dietArr && JSON.stringify(dietArr)} */}
 
-      <div className=" rounded-lg border border-grey-200 overflow-x-auto m-3 p-2">
-        <table>
-          <thead>
-            <tr>
+      <div className=" font-mono rounded-2xl bg-white border border-grey-200 overflow-x-auto m-3 p-3">
+        <table className="">
+          <thead className="bg-blue-100  ">
+            {loading && <p>Loading...</p>}
+            <tr className="animate-fade-up-fast">
               {tableHeading.map((heading, index) =>
                 heading === "Food name" ? (
-                  <th className="" key={heading}>
+                  <th className="p-2" key={heading}
+                  
+                  >
                     {heading}
                   </th>
                 ) : (
@@ -228,20 +216,23 @@ function Diet() {
           <tbody>
             {currentData &&
               currentData.map((foodObj) => (
-                <tr key={foodObj._id} className="p-2">
+                <tr key ={foodObj._id} className=" border-b-2 border-b-gray-200 ">
                   {Object.keys(foodObj)
                     .filter((key) => key !== "_id" && key !== "__v")
                     .map((foodItem) =>
                       foodItem === "foodName" ? (
-                        <td key={foodItem} className="">
-                          {foodObj[foodItem]}
+                        <td key={foodItem} className=" p-0 ">
+                          <div className="animate-fade-up-slow m-2 p-4 font-semibold rounded-full bg-amber-200 text-center">
+                            {(foodObj[foodItem]).toUpperCase()}
+                            </div>
                         </td>
                       ) : foodItem === "quantity" ? (
-                        <td className="" key={foodItem}>
+                        <td className="animate-fade-up-slow2" key={foodItem}>
                           <Input
                             type="number"
                             value={foodObj[foodItem]}
-                            inputClassName="w-30"
+                            inputClassName="text-center m-3 bg-stone-100 shadow-xl"
+                            labelClassName=" font-thin"
                             min="0"
                             onChange={(e) =>
                               handleOnChange(
@@ -254,26 +245,29 @@ function Diet() {
                       ) : (
                         <td
                           key={foodItem}
-                          className="text-center overflow-x-auto w-300 "
+                          className="animate-fade-up-slow text-center text-base overflow-x-auto w-300 "
                         >
                           {roundToThree(foodObj[foodItem])}
                         </td>
                       )
                     )}
                 </tr>
+                
               ))}
             {totalMacros && (
-              <tr>
+              <tr className="">
                 {Object.keys(totalMacros).map((macro) =>
                   macro === "foodName" ? (
-                    <td className="" key={macro}>
+                    <td className=" text-center font-mono text-xl" key={macro}>
                       {totalMacros[macro]}
                     </td>
                   ) : macro === "quantity" ? (
                     <td key={totalMacros[macro]}></td>
                   ) : (
-                    <td key={macro} className="text-center text-nowrap px-2">
+                    <td key={macro} className=" text-lg font-medium text-center text-nowrap pt-2">
+                      <div className="animate-fade-up-slow2 p-2 bg-green-200 ">
                       {roundToThree(totalMacros[macro])}
+                      </div>
                     </td>
                   )
                 )}
@@ -283,33 +277,53 @@ function Diet() {
         </table>
       </div>
 
-      <div className="flex justify-between">
-        <Button onClick={(e) => navigate(`/dashboard`)}>
+      <div className="animate-fade-up-fast flex justify-between">
+        <Button onClick={(e) => navigate(`/dashboard`)}
+          className="rounded-full p-2 text-sm md:text-2xl md:px-5 md:py-2 bg-blue-300 btn-hover shadow-2xl text-black"
+          
+          >
           &larr; Dashboard
         </Button>
         {IsOwner && (
           <div>
-            <Button onClick={(e) => handleEditButton()}>Edit</Button>
+            <Button onClick={(e) => handleEditButton()}
+              className="rounded-full p-2 text-sm md:text-2xl md:px-5 md:py-2 bg-red-300 btn-hover shadow-2xl text-black"
+              >Edit</Button>
 
-            <Button onClick={(e) => handleDeleteButton()}>Delete</Button>
+            <Button onClick={(e) => handleDeleteButton()}
+              className="rounded-full p-2 text-sm md:text-2xl md:px-5 mdL:py-2 bg-red-300 btn-hover shadow-2xl text-black">
+                Delete
+                </Button>
           </div>
         )}
       </div>
 
-      <div>
-        <div className="m-3">
-          <Chart data={valForCharts} />
+
+      <div className=" bg-amber-50 inset-1 shadow-2xl inset-shadow-sm inset-shadow-amber-500/70 rounded-4xl mt-15 md:p-5 pb-20">
+        <div className="mb-14">
+          <p className="animate-fade-up-slow text-center text-green-500 text-2xl font-mono  ">
+            Macro distribution.
+            </p>
+            <p className="animate-fade-up-fast text-center text-black text-base font-mono">
+              The chart is the ratio between sum of macros in this.
+            </p>
+        </div>
+        <div className="fade-up-on-scroll">
+          <Chart data={valForCharts}
+          // circleRadius={window.innerWidth <786 ? 90:50 }
+           />
         </div>
         <br />
         <br />
         <br />
-        <div className="">
-          <div className="text-center text-green-500">
+        <hr className="hr w-70 md:w-150" />
+        <div className=" pb-10">
+          <div className="fade-up-on-scroll-fast text-center text-green-500 text-2xl mb-5 font-mono">
             {" "}
-            Reccomended Ratio &#10026;
+           &#10026; Reccomended Ratio 
           </div>
-          <div className="flex  opacity-85">
-            <div className="flex-1  ">
+          <div className="fade-up-on-scroll md:flex   opacity-85">
+            <div className=" m-10 md:m-0 md:flex-1  ">
               <Chart
                 data={[
                   { name: "fats", value: 25 },
@@ -321,8 +335,8 @@ function Diet() {
                 circleRadius={50}
               />
             </div>
-
-            <div className="flex-1 ">
+            
+            <div className="m-10 md:m-0 md:flex-1 ">
               <Chart
                 data={[
                   { name: "Fats", value: 25 },
@@ -336,7 +350,7 @@ function Diet() {
               />
             </div>
 
-            <div className="flex-1">
+            <div className=" m-10 md:m-0 md:flex-1">
               <Chart
                 data={[
                   { name: "Fats", value: 20 },
@@ -346,6 +360,7 @@ function Diet() {
                 userLabel="Muscle Gain"
                 height={160}
                 circleRadius={50}
+                
               />
             </div>
           </div>

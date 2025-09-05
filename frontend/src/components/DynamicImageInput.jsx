@@ -16,10 +16,10 @@ function DynamicImageInput({
   });
 
   return (
-    <div>
-      <ul>
+    <div className="">
+      <ul className="">
         {fields.map((item, index) => (
-          <li key={item.id} className="flex ">
+          <li key={item.id} className="flex flex-wrap gap-2 m-2 p-2 ">
             <Input
               label={`${fieldLabel} ${index + 1}`}
               type="text"
@@ -48,19 +48,23 @@ function DynamicImageInput({
                   {!loading && 
             <Button
               type="button"
-              className="h-7 my-8 "
+              className="h-7 my-8 btn-hover  text-white rounded-2xl bg-red-500 "
               onClick={() => remove(index)}
             >
-              Remove
+              Remove  &#128465;
             </Button>
             }
           </li>
         ))}
+        
+        
       </ul>
       {/* {error && <p className='text-red-400 text-center font-semibold'>{error}</p>} */}
       {!loading && 
-      <Button type="button" onClick={() => append(defaultItem)}>
-        Add Another Image
+      <Button type="button" onClick={() => append(defaultItem)}
+      className="btn-hover rounded-full py-2 px-4 text-xl ml-19 text-white bg-indigo-500"
+      >
+        Add Image +
       </Button>
       }
     </div>

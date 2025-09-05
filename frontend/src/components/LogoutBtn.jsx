@@ -21,7 +21,7 @@ function LogoutBtn({className=""}) {
     onClick={logoutHandler}
     className={className}
     >
-        Logout
+        Logout 
         
     </button>
   )

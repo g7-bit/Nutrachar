@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../store/authslice.js";
 import authService from "../expressBackend/auth.js";
-import { Button, Input, Logo } from "./index.js";
+import { Button, Input, LoginSidePane, Logo,  } from "./index.js";
 import { useDispatch,useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+
 
 function Signup() {
   const dispatch = useDispatch();
@@ -40,10 +41,11 @@ function Signup() {
       navigate("/dashboard")
     } catch (error) {
       
-      setError("Some error occured while creating account")
+      // setError("Some error occured while creating account",error.response.data.message)
+      setError(error.response.data.message)
       setLoading(false)
       console.log("4.1:: createNewAcc:: catch error",error)
-      console.log("5signup.jsx:: createNewAcc catch error::", error.response?.data)
+      console.log("5signup.jsx:: createNewAcc catch error::", error.response?.data.message)
 
     }
   }
@@ -51,54 +53,48 @@ function Signup() {
     
 
   return (
-    <div className=" text-white text-3xl">
-      <div className="flex justify-between h-150 ">
-        <div className=" grow basis-1/2 bg-black">
-          <div>
-            <img
-              className="h-150 object-cover grow"
-              src="https://res.cloudinary.com/daahu0xca/image/upload/v1749025000/Gemini_Generated_Image_dvp2z4dvp2z4dvp2_qjsowk.png"
-              alt=""
-            />
-          </div>
-        </div>
+    <div className="">
+      <div className=" flex justify-between min-h-screen[80%] bg-amber-100 ">
+        
 
-        <div className=" grow basis-1/2 bg-amber-50 text-black">
-          <div className="h-full max-w-full flex items-center justify-center ">
-            <div className="flex flex-col flex-wrap p-7 my-5 border-2 rounded-3xl w-125 ">
+        <LoginSidePane/>
+
+        <div className=" my-7 grow  text-black">
+          <div className=" flex items-center  justify-center ">
+            <div className="flex items-center h-114 md:w-120 md:h-135 flex-col flex-wrap shadow-2xl rounded-3xl p-5 bg-amber-50 ">
 
               
                  <form 
                  onSubmit={handleSubmit(createNewAcc, (errors)=>{setError("Please Enter all details in Form")})}
                   encType="multipart/form-data"
                  >
-                <div className="text-4xl text-center">
-                  Signup
+                <div className="animate-fade-up-superfast text-2xl md:text-4xl font-medium  text-center ">
+                  <u>Sign In</u>
                 </div>
-                <div className="text-wrap text-xs break-words text-center mb-5">
-                  Register for a better experience
-                </div>
-                <div>
+
+                <div className="flex flex-col items-center mt-5">
                   <Input
                     label="Username"
                     placeholder="aryan32"
                     type="text"
-                    labelClassName="h-3 text-xl "
-                    inputClassName="bg-sky-100 rounded-xl h-10 ml-5 "
+                    labelClassName="ml-2 text-basis md:text-[1.3rem]"
+                    inputClassName="w-70 bg-white"
                     {...register("username", {required: true,})}
                   />
                   <Input
                   label="Email"
                   type= "email"
-                  labelClassName="h-3 text-xl "
+                  labelClassName="ml-2 text-basis md:text-[1.3rem]"
+                  inputClassName="w-70 bg-white"
                   placeholder="jammy@gmail.com"
                   {...register("email",{required:true,})}
                   />
                   <Input
                   label="Password"
                   type="password"
-                  labelClassName="h-3 text-xl "
+                  labelClassName="ml-2 text-basis md:text-[1.3rem]"
                   placeholder="Enter Your Password"
+                  inputClassName="w-70 bg-white"
                   autoComplete="off"
                   {...register("password",{required:true})}
                   />
@@ -106,16 +102,16 @@ function Signup() {
                   label="Profile Picture"
                   type="file"
                   accept="image/png, image/jpg, image/jpeg, image/gif"
-                  labelClassName="h-3 text-xl "
-                  inputClassName="text-xs"
+                  labelClassName="ml-[-12px]  text-basis md:text-[1.3rem]"
+                  inputClassName="w-60 font-medium text-[0.8rem] md:text-[1rem] bg-white file:cursor-pointer cursor-pointer  file:py-1 file:px-3 file:mr-6 file:bg-blue-400 file:rounded-4xl file:hover:bg-blue-700 file:text-white rounded-4xl shadow-xl shadow-blue/30"
                   {...register("avatar",{required:true})}
                   />
+
                   {error && <p className="text-xl text-red-500 text-center">{error}</p>}
                   
                   <Button 
                   type='submit'
-                  disabled={loading}
-                  className="w-full mt-3 cursor-pointer hover:bg-blue-700 text-red-500"
+                  className=" animate-fade-up-slow2   bg-blue-700 font-normal w-80 p-1  font-sans transition delay-100 duration-300 ease-in-out hover:scale-110 cursor-pointer rounded-full text-2xl text-white hover:bg-indigo-600 "
                   
                   >
                     {loading ? 

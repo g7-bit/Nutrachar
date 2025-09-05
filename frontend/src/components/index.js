@@ -14,6 +14,8 @@ import Dashboard from "./Dashboard";
 import Diet from './Diet'
 import Chart from "./chart";
 import AuthLayout from "./AuthLayout";
+import LoginSidePane from "./LoginSidePane";
+
 
 
 
@@ -35,4 +37,6 @@ export {
     Diet,
     Chart,
     AuthLayout,
+    LoginSidePane,
+  
 }
