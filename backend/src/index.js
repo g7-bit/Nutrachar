@@ -13,6 +13,7 @@ connectDB()
 
     app.listen(port, ()=>{
         console.log("server started listieing on port ", port)
+        console.log("server started listieing on gemini-",process.env.GEMINI_API)
     })
 })
 .catch((err)=>{

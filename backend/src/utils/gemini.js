@@ -3,10 +3,19 @@ import {
   createUserContent,
   createPartFromUri,
 } from "@google/genai";
+
+import dotenv from 'dotenv'
+dotenv.config({
+    path:'./.env'
+})
+
 import { ApiError } from "../utils/ApiError.js";
 
+let gemApi = process.env.GEMINI_API
+console.log("gemini api is --- ", gemApi)
+
 const ai = new GoogleGenAI({
-  apiKey: "AIzaSyAwcTQRCYxCoTTIRBpLNPMEkPC4vYxsxKU",
+  apiKey: gemApi
 });
 
 async function ocrProcessGemini(filePath) {
