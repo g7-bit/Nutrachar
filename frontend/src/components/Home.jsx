@@ -9,11 +9,11 @@ function Home() {
   return (
     <div>
 
-      <div className="animate-fade-up-slow2 text-shadow text-center font-extrabold text-6xl font-[Futura] text-shadow-sky-300/50 text-teal-700 my-7 md:my-15">
+      <div className="animate-fade-up-slow2 text-shadow text-center font-extrabold text-4xl md:text-6xl font-[Futura] text-shadow-sky-300/50 text-teal-700 my-7 md:my-15">
         An app to track macros in your diet!
       </div>
-      <hr  className=" animate-fade-up-slow2 hr w-50"/>
-      <div className="flex justify-around ">
+      <hr  className=" animate-fade-up-slow2 hr w-50 "/>
+      <div className="flex justify-around  ">
         <div className=" flex-1/2">
           <div className="md:mt-10 flex  flex-col gap-5 items-center">
             <div className="animate-fade-up-fast">
@@ -46,9 +46,9 @@ function Home() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col animate-fade-up-fast md:mt-40 justify-baseline flex-1/4 sticky top-0 ">
+        <div className="flex flex-col animate-fade-up-fast md:mt-40 justify-baseline flex-1/4 mt-30 ">
           <Link to="/dashboard" className="sticky top-50">
-            <Button className="btn-hover hover:bg-indigo-600 bg-blue-500 text-white rounded-full px-5 py-3  text-2xl">
+            <Button className="btn-hover shadow-2xl hover:bg-indigo-600 bg-teal-700 md:bg-blue-500 text-white  rounded-2xl md:rounded-full  md:px-5 py-3  md:text-2xl">
               Get Started &rarr;
             </Button>
           </Link>

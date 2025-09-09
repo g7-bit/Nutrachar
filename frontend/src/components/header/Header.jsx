@@ -36,9 +36,9 @@ function Header() {
               <Logo></Logo>
             </Link>
           </div>
-          <div className=" hidden md:block transition-all duration-300 ease-in-out">
+          {location.pathname !== "/" && <div className=" hover:text-blue-500 btn-hover hidden md:block transition-all duration-300 ease-in-out">
             <Link to="/">How It works</Link>
-          </div>
+          </div>}
           <div className="animate-fade-up-slow flex items-center gap-7 md:gap-40 transition-all duration-500 ease-in-out">
             {userDataInStore && location.pathname !== "/dashboard" && (
               <div className="shadow-xl text-basis hover:bg-red-200 btn-hover rounded-full md:p-2 transition-all duration-300 ease-in-out transform">
