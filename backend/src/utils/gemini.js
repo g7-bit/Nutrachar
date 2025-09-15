@@ -12,7 +12,7 @@ import {
 import { ApiError } from "../utils/ApiError.js";
 
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API,
+  apiKey:process.env.GEMINI_API,
 });
 
 async function ocrProcessGemini(filePath) {
