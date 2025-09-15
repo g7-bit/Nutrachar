@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../components";
 import { format } from "date-fns";
 import { useNavigate, Link } from "react-router-dom";
-import { Diet } from "../../../backend/src/models/diet.model.js";
-import axios from "axios";
+// import { Diet } from "../../../backend/src/models/diet.model.js";
+// import axios from "axios";
 import dietService from "../expressBackend/diet.js";
 
 function Dashboard() {
