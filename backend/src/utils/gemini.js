@@ -1,3 +1,9 @@
+import dotenv from 'dotenv'
+dotenv.config({
+    path:'./.env'
+})
+
+
 import {
   GoogleGenAI,
   createUserContent,
@@ -6,7 +12,7 @@ import {
 import { ApiError } from "../utils/ApiError.js";
 
 const ai = new GoogleGenAI({
-  apiKey: "AIzaSyAwcTQRCYxCoTTIRBpLNPMEkPC4vYxsxKU",
+  apiKey: process.env.GEMINI_API,
 });
 
 async function ocrProcessGemini(filePath) {
