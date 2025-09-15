@@ -25,12 +25,14 @@ const uploadOnCloudinary = async(localFilePath)=>{
         )
         
         
-        fs.unlinkSync(localFilePath)
+        // fs.unlinkSync(localFilePath)
         return response
     }catch(error){
-        fs.unlinkSync(localFilePath)
+        // fs.unlinkSync(localFilePath)
         console.log("3. i am here in catch of clodinary",error)
         return null
+    }finally{
+        await fs.promises.unlink(localFilePath);
     }
 }
 
