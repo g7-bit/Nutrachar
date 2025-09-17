@@ -1,12 +1,17 @@
+// import dotenv from 'dotenv'
+// dotenv.config({
+//     path:'./.env'
+// })
+
 import {v2 as cloudinary} from "cloudinary"
 import fs  from "fs"
 
-
+console.log("cloudinary api",process.env.CLOUDINARY_API_KEY)
 
 cloudinary.config({ 
-  cloud_name: 'daahu0xca', 
-  api_key: '742269976877271', 
-  api_secret: 'x0AdtOpO87sSg4wFBnkyZUAh-1Y',
+  cloud_name:process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key:process.env.CLOUDINARY_API_KEY, 
+  api_secret:process.env.CLOUDINARY_API_SECRET,
 
 });
 
@@ -31,9 +36,10 @@ const uploadOnCloudinary = async(localFilePath)=>{
         // fs.unlinkSync(localFilePath)
         console.log("3. i am here in catch of clodinary",error)
         return null
-    }finally{
-        await fs.promises.unlink(localFilePath);
     }
+    // finally{
+    //     await fs.promises.unlink(localFilePath);
+    // }
 }
 
 export {uploadOnCloudinary}
