@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/api/(.*)",
-            "destination": "https://mainogbackend-9s2uptgxl-girdhars-projects.vercel.app/api/$1"
+            "destination": "https://nutrachar-backend-c5vzqvxe0-girdhars-projects.vercel.app/api/$1"
         }
     ]
 }
