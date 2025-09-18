@@ -10,7 +10,7 @@ function Home() {
     <div>
 
       <div className="animate-fade-up-slow2 text-shadow text-center font-extrabold text-4xl md:text-6xl font-[Futura] text-shadow-sky-300/50 text-teal-700 my-7 md:my-15">
-        An app to track macros in your diet!
+        An app to analyze macros in your diet!
       </div>
       <hr  className=" animate-fade-up-slow2 hr w-50 "/>
       <div className="flex justify-around  ">

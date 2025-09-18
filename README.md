@@ -1,26 +1,26 @@
 <div align="center">
   <img src="frontend/public/logo-light.png" alt="Nutrachar Logo" width="200"/>
-  <h1>Nutrachar - Diet Macro Tracker</h1>
+  <h1>Nutrachar - Diet Macro Analyzer</h1>
   <p>
     A full-stack web application to track the macronutrients in your diet by uploading nutritional labels or entering data manually.
   </p>
   
   <!-- Badges -->
   <p>
-    <img src="https://img.shields.io/badge/license-ISC-blue.svg" alt="License Badge">
     <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Badge">
     <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js Badge">
     <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB Badge">
+        <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js Badge">
     <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel Badge">
   </p>
   
-  <a href="#"><strong>View Live Demo »</strong></a>
+  <a href="nutrachar.vercel.app"><strong>View Live Demo »</strong></a>
 </div>
 
 <br>
 
 <div align="center">
-  <img src="nutrachar-assets/schema.png" alt="Application Screenshot" width="800"/>
+  <img src="https://res.cloudinary.com/daahu0xca/image/upload/v1758218315/76c87b1ef5a12a91271df5fb34d6b0232b75b843ad35db29f240f749c29b4966_i8rygv.png" alt="Application Screenshot" width="800"/>
 </div>
 
 ## ✨ Features
