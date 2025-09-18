@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel Badge">
   </p>
   
-  <a href="nutrachar.vercel.app"><strong>View Live Demo »</strong></a>
+  <a href="https://nutrachar.vercel.app"><strong>View Live Demo »</strong></a>
 </div>
 
 <br>
