@@ -10,9 +10,10 @@ import {
   createPartFromUri,
 } from "@google/genai";
 import { ApiError } from "../utils/ApiError.js";
+console.log(`gem api key : -${process.env.GEMINI_API}-`)
 
 const ai = new GoogleGenAI({
-  apiKey:"AIzaSyAwcTQRCYxCoTTIRBpLNPMEkPC4vYxsxKU",
+  apiKey:process.env.GEMINI_API,
 });
 
 async function ocrProcessGemini(filePath) {
@@ -24,7 +25,7 @@ async function ocrProcessGemini(filePath) {
     });
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-preview-05-20",
+      model: "gemini-2.5-pro",
       contents: createUserContent([
         createPartFromUri(myfile.uri, myfile.mimeType),
         `give me an object, in json format.
