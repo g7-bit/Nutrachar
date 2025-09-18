@@ -90,7 +90,7 @@ Nutrachar/
     ```sh
     npm install
     ```
-3.  Create a `.env` file and add the necessary environment variables (e.g., `MONGODB_URI`, `CORS_ORIGIN`, `ACCESS_TOKEN_SECRET`, `GEMINI_API`, Cloudinary credentials).
+3.  Create a `.env` file and add the necessary environment variables (e.g., `MONGODB_URI`, `ACCESS_TOKEN_SECRET`, `GEMINI_API`, Cloudinary credentials).
 4.  Start the development server:
     ```sh
     npm run dev
