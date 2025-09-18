@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/api/(.*)",
-            "destination": "http://backendtest-ivory.vercel.app/api/$1"
+            "destination": "http://nutrachar-backend.vercel.app/api/$1"
         }
     ]
 }
