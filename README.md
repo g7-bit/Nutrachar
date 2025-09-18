@@ -70,13 +70,15 @@ Nutrachar/
     └── vercel.json       # Vercel deployment config
 ```
 
-## 🚀 Getting Started
+## 🚀 Getting Started - Run Locally 🖥️
 
 ### Prerequisites
 
+
 -   Node.js and npm
--   MongoDB instance (local or cloud)
--   API keys for Cloudinary and Google Gemini
+-   API keys:  (as per .env sample in /backend folder)
+-       MongoDB instance (local or cloud)
+-       API keys for Cloudinary and Google Gemini
 
 ### 🖥️ Backend Setup
 
@@ -104,7 +106,7 @@ Nutrachar/
     ```sh
     npm install
     ```
-3.  Create a `.env` file and add `VITE_BACKEND_URL` pointing to your backend server.
+3.  edit `vite.config.js` in Nutrachar/frontend with backend localhost url.
 4.  Start the development server:
     ```sh
     npm run dev
