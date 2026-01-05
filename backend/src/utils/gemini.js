@@ -25,7 +25,7 @@ async function ocrProcessGemini(filePath) {
     });
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-pro",
+      model: "gemini-3-flash-preview",
       contents: createUserContent([
         createPartFromUri(myfile.uri, myfile.mimeType),
         `give me an object, in json format.
